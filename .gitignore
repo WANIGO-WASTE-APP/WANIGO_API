@@ -54,3 +54,6 @@ coverage/
 
 # Deployment
 /public_html
+
+#AI
+/.kiro
