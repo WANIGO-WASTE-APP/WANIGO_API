@@ -15,8 +15,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            TipeBankSampahSeeder::class,
             KategoriSampahSeeder::class,
-            SubKategoriSampahSeeder::class,
+            BankSampahSeeder::class,              // ← Bank sampah harus dibuat dulu
+            SubKategoriSampahSeeder::class,       // ← Baru sub kategori (per bank)
+            JamOperasionalBankSampahSeeder::class,
+            KatalogSampahSeeder::class,
         ]);
     }
 }

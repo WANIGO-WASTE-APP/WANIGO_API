@@ -56,7 +56,7 @@ class MemberBankSampahController extends Controller
             // Menghapus baris yang mengassign nilai ke dirinya sendiri
             
             // Tambahkan status keanggotaan
-            $item->status_keanggotaan = $member ? $member->status : null;
+            $item->status_keanggotaan = $member ? $member->status_keanggotaan : null;
             
             return $item;
         });
@@ -109,7 +109,7 @@ class MemberBankSampahController extends Controller
             'data' => [
                 'is_registered' => true,
                 'kode_nasabah' => $member->kode_nasabah,
-                'status' => $member->status,
+                'status_keanggotaan' => $member->status_keanggotaan,
                 'tanggal_bergabung' => $member->created_at->format('Y-m-d')
             ]
         ]);
@@ -179,7 +179,8 @@ class MemberBankSampahController extends Controller
             'user_id' => $user->id,
             'bank_sampah_id' => $request->bank_sampah_id,
             'kode_nasabah' => $kodeNasabah,
-            'status' => 'aktif',
+            'tanggal_daftar' => Carbon::now(),
+            'status_keanggotaan' => 'aktif',
         ]);
 
         // Update jumlah nasabah di bank sampah
