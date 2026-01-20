@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\API\Nasabah;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BankSampahListResource;
+use App\Http\Resources\BankSampahDetailResource;
 use App\Models\BankSampah;
 use App\Models\MemberBankSampah;
 use App\Models\JamOperasionalBankSampah;
 use App\Models\KatalogSampah;
+use App\Models\SetoranSampah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
@@ -21,7 +25,7 @@ class BankSampahController extends Controller
      */
     public function index(Request $request)
     {
-        $query = BankSampah::query();
+        $query = BankSampah::with(['jamOperasional', 'katalogSampah']);
 
         // Filter berdasarkan keyword (nama bank sampah)
         if ($request->has('keyword')) {
@@ -50,11 +54,11 @@ class BankSampahController extends Controller
             $radius = $request->radius ?? 10; // Default 10 km
 
             // Haversine formula untuk menghitung jarak
-            $query->selectRaw("*,
-                (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance",
+            $query->selectRaw("bank_sampah.*,
+                (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance_km",
                 [$latitude, $longitude, $latitude])
-                ->having('distance', '<=', $radius)
-                ->orderBy('distance');
+                ->having('distance_km', '<=', $radius)
+                ->orderBy('distance_km');
         }
 
         $bankSampah = $query->get();
@@ -71,8 +75,8 @@ class BankSampahController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $bankSampah,
-            'count' => $bankSampah->count()
+            'message' => 'Daftar bank sampah berhasil diambil',
+            'data' => BankSampahListResource::collection($bankSampah)
         ]);
     }
 
@@ -85,16 +89,23 @@ class BankSampahController extends Controller
     {
         $userId = Auth::id();
 
-        $bankSampah = BankSampah::whereIn('id', function($query) use ($userId) {
+        $bankSampah = BankSampah::with(['jamOperasional', 'katalogSampah'])
+            ->whereIn('id', function($query) use ($userId) {
             $query->select('bank_sampah_id')
                   ->from('member_bank_sampah')
                   ->where('user_id', $userId)
                   ->where('status_keanggotaan', 'aktif');
         })->get();
 
+        // Add member status
+        foreach ($bankSampah as $bank) {
+            $bank->member_status = 'aktif';
+        }
+
         return response()->json([
             'success' => true,
-            'data' => $bankSampah
+            'message' => 'Daftar bank sampah nasabah berhasil diambil',
+            'data' => BankSampahListResource::collection($bankSampah)
         ]);
     }
 
@@ -106,7 +117,7 @@ class BankSampahController extends Controller
      */
     public function show($id)
     {
-        $bankSampah = BankSampah::with(['jamOperasional', 'katalogSampah'])->find($id);
+        $bankSampah = BankSampah::with(['jamOperasional', 'katalogSampah', 'provinsi', 'kabupatenKota', 'kecamatan', 'kelurahanDesa'])->find($id);
 
         if (!$bankSampah) {
             return response()->json([
@@ -126,42 +137,21 @@ class BankSampahController extends Controller
 
         if ($memberBankSampah) {
             $memberStatus = $memberBankSampah->status_keanggotaan;
-            $memberData = $memberBankSampah;
+            $memberData = [
+                'kode_nasabah' => $memberBankSampah->kode_nasabah,
+                'tanggal_bergabung' => $memberBankSampah->created_at->format('Y-m-d'),
+                'saldo' => (float) $memberBankSampah->saldo,
+            ];
         }
 
-        // Cek apakah bank sampah sedang buka
-        $hariIni = Carbon::now()->dayOfWeek;
-        $jamOperasional = JamOperasionalBankSampah::where('bank_sampah_id', $id)
-            ->where('day_of_week', $hariIni)
-            ->first();
-
-        $sedangBuka = false;
-        if ($jamOperasional) {
-            $sedangBuka = $jamOperasional->isBuka();
-        }
-
-        // Informasi kategori sampah yang diterima
-        $kategoriSampah = $bankSampah->katalogSampah
-            ->pluck('kategori_sampah')
-            ->unique()
-            ->values();
-
-        $jenisKategori = 'tidak_ada';
-        if ($kategoriSampah->contains(0) && $kategoriSampah->contains(1)) {
-            $jenisKategori = 'kering_dan_basah';
-        } elseif ($kategoriSampah->contains(0)) {
-            $jenisKategori = 'kering';
-        } elseif ($kategoriSampah->contains(1)) {
-            $jenisKategori = 'basah';
-        }
+        // Add member status and data to bank sampah object
+        $bankSampah->member_status = $memberStatus;
+        $bankSampah->member_data = $memberData;
 
         return response()->json([
             'success' => true,
-            'data' => $bankSampah,
-            'member_status' => $memberStatus,
-            'member_data' => $memberData,
-            'sedang_buka' => $sedangBuka,
-            'kategori_sampah' => $jenisKategori
+            'message' => 'Detail bank sampah berhasil diambil',
+            'data' => new BankSampahDetailResource($bankSampah)
         ]);
     }
 
@@ -183,7 +173,8 @@ class BankSampahController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => $validator->errors()->first()
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
             ], 422);
         }
 
@@ -191,11 +182,12 @@ class BankSampahController extends Controller
         $longitude = $request->longitude;
         $radius = $request->radius ?? 10; // Default 10 km
 
-        $query = BankSampah::selectRaw("*,
-            (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance",
+        $query = BankSampah::with(['jamOperasional', 'katalogSampah'])
+            ->selectRaw("bank_sampah.*,
+            (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance_km",
             [$latitude, $longitude, $latitude])
             ->where('status_operasional', true)
-            ->having('distance', '<=', $radius);
+            ->having('distance_km', '<=', $radius);
 
         // Filter berdasarkan kategori sampah
         if ($request->has('kategori_sampah')) {
@@ -206,7 +198,7 @@ class BankSampahController extends Controller
             });
         }
 
-        $bankSampah = $query->orderBy('distance')->get();
+        $bankSampah = $query->orderBy('distance_km')->get();
 
         // Tambahkan status keanggotaan untuk setiap bank sampah
         $userId = Auth::id();
@@ -220,8 +212,8 @@ class BankSampahController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $bankSampah,
-            'count' => $bankSampah->count()
+            'message' => 'Bank sampah terdekat berhasil diambil',
+            'data' => BankSampahListResource::collection($bankSampah)
         ]);
     }
 
@@ -316,7 +308,8 @@ class BankSampahController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => $validator->errors()->first()
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
             ], 422);
         }
 
@@ -324,10 +317,11 @@ class BankSampahController extends Controller
         $longitude = $request->longitude;
         $radius = $request->radius ?? 10; // Default 10 km
 
-        $query = BankSampah::selectRaw("*,
-            (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance",
+        $query = BankSampah::with(['jamOperasional', 'katalogSampah'])
+            ->selectRaw("bank_sampah.*,
+            (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance_km",
             [$latitude, $longitude, $latitude])
-            ->having('distance', '<=', $radius);
+            ->having('distance_km', '<=', $radius);
 
         // Filter berdasarkan kategori sampah
         if ($request->has('kategori_sampah')) {
@@ -338,7 +332,7 @@ class BankSampahController extends Controller
             });
         }
 
-        $bankSampah = $query->orderBy('distance')->get();
+        $bankSampah = $query->orderBy('distance_km')->get();
 
         // Tambahkan status keanggotaan dan status operasional realtime
         $userId = Auth::id();
@@ -362,8 +356,168 @@ class BankSampahController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $bankSampah,
-            'count' => $bankSampah->count()
+            'message' => 'Bank sampah berhasil difilter',
+            'data' => BankSampahListResource::collection($bankSampah)
+        ]);
+    }
+
+    /**
+     * Get top frequency bank sampah based on user's transaction history.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTopFrequency(Request $request)
+    {
+        $userId = Auth::id();
+        
+        // Aggregate setoran_sampah by bank_sampah_id and count
+        $topBanks = SetoranSampah::select('bank_sampah_id', DB::raw('COUNT(*) as visit_count'))
+            ->where('user_id', $userId)
+            ->groupBy('bank_sampah_id')
+            ->orderByDesc('visit_count')
+            ->limit(5)
+            ->with(['bankSampah' => function($query) {
+                $query->with(['jamOperasional', 'katalogSampah']);
+            }])
+            ->get();
+        
+        // Transform to include bank details
+        $result = $topBanks->map(function($item) {
+            return [
+                'bank_sampah' => $item->bankSampah,
+                'visit_count' => $item->visit_count,
+            ];
+        });
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Top frekuensi bank sampah berhasil diambil',
+            'data' => $result
+        ]);
+    }
+
+    /**
+     * Get all bank sampah with comprehensive filtering and sorting.
+     * Public endpoint for listing all bank sampah.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllBankSampah(Request $request)
+    {
+        // Validate request parameters
+        $validator = Validator::make($request->all(), [
+            'q' => 'sometimes|string|max:255',
+            'lat' => 'sometimes|numeric|between:-90,90',
+            'lng' => 'sometimes|numeric|between:-180,180',
+            'radius_km' => 'sometimes|integer|min:1|max:100',
+            'kategori' => 'sometimes|in:kering,basah,semua',
+            'provinsi_id' => 'sometimes|exists:provinsi,id',
+            'kabupaten_id' => 'sometimes|exists:kabupaten_kota,id',
+            'kecamatan_id' => 'sometimes|exists:kecamatan,id',
+            'sort' => 'sometimes|in:distance,name',
+            'per_page' => 'sometimes|integer|min:1|max:100',
+            'page' => 'sometimes|integer|min:1',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        
+        $query = BankSampah::with(['jamOperasional', 'provinsi', 'kabupatenKota', 'kecamatan', 'kelurahanDesa', 'katalogSampah'])
+            ->where('status_operasional', true);
+        
+        // Keyword search
+        if ($request->filled('q')) {
+            $query->where('nama_bank_sampah', 'like', "%{$request->q}%");
+        }
+        
+        // Administrative region filters
+        if ($request->filled('provinsi_id')) {
+            $query->where('provinsi_id', $request->provinsi_id);
+        }
+        
+        if ($request->filled('kabupaten_id')) {
+            $query->where('kabupaten_kota_id', $request->kabupaten_id);
+        }
+        
+        if ($request->filled('kecamatan_id')) {
+            $query->where('kecamatan_id', $request->kecamatan_id);
+        }
+        
+        // Category filter
+        if ($request->filled('kategori') && $request->kategori !== 'semua') {
+            $kategoriValue = $request->kategori === 'kering' ? 0 : 1;
+            $query->whereHas('katalogSampah', function($q) use ($kategoriValue) {
+                $q->where('kategori_sampah', $kategoriValue)
+                  ->where('status_aktif', true);
+            });
+        }
+        
+        // Location-based filtering with distance calculation
+        $hasLocation = $request->filled('lat') && $request->filled('lng');
+        if ($hasLocation) {
+            $lat = $request->lat;
+            $lng = $request->lng;
+            $radius = $request->radius_km ?? 10;
+            
+            // Haversine formula for distance calculation
+            $query->selectRaw("
+                bank_sampah.*,
+                (6371 * acos(
+                    cos(radians(?)) * 
+                    cos(radians(latitude)) * 
+                    cos(radians(longitude) - radians(?)) + 
+                    sin(radians(?)) * 
+                    sin(radians(latitude))
+                )) AS distance_km
+            ", [$lat, $lng, $lat])
+            ->having('distance_km', '<=', $radius);
+        }
+        
+        // Sorting
+        $sort = $request->sort ?? ($hasLocation ? 'distance' : 'name');
+        if ($sort === 'distance' && $hasLocation) {
+            $query->orderBy('distance_km', 'asc');
+        } else {
+            $query->orderBy('nama_bank_sampah', 'asc');
+        }
+        
+        // Pagination
+        $perPage = $request->per_page ?? 20;
+        $bankSampah = $query->paginate($perPage);
+        
+        // Add member status for authenticated users
+        $userId = Auth::id();
+        if ($userId) {
+            $bankSampah->getCollection()->transform(function($bank) use ($userId) {
+                $member = MemberBankSampah::where('user_id', $userId)
+                    ->where('bank_sampah_id', $bank->id)
+                    ->first();
+                
+                $bank->member_status = $member ? $member->status_keanggotaan : 'bukan_nasabah';
+                return $bank;
+            });
+        }
+        
+        // Transform to resource
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar bank sampah berhasil diambil',
+            'data' => BankSampahListResource::collection($bankSampah),
+            'meta' => [
+                'current_page' => $bankSampah->currentPage(),
+                'per_page' => $bankSampah->perPage(),
+                'total' => $bankSampah->total(),
+                'last_page' => $bankSampah->lastPage(),
+                'from' => $bankSampah->firstItem(),
+                'to' => $bankSampah->lastItem(),
+            ]
         ]);
     }
 }

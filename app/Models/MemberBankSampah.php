@@ -99,4 +99,29 @@ class MemberBankSampah extends Model
     {
         return 'Rp ' . number_format($this->saldo, 0, ',', '.');
     }
+
+    /**
+     * Check if member has active transactions.
+     * Active transactions are setoran sampah that are not completed or cancelled.
+     *
+     * @return bool
+     */
+    public function hasActiveTransactions(): bool
+    {
+        return $this->setoranSampah()
+            ->whereNotIn('status_setoran', ['Selesai', 'Dibatalkan'])
+            ->exists();
+    }
+
+    /**
+     * Get total tonase sampah from completed transactions.
+     *
+     * @return float
+     */
+    public function getTotalTonase(): float
+    {
+        return (float) $this->setoranSampah()
+            ->where('status_setoran', 'Selesai')
+            ->sum('total_berat');
+    }
 }

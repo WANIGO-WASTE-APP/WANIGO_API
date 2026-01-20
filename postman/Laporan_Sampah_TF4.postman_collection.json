@@ -1,0 +1,439 @@
+{
+	"info": {
+		"name": "Laporan Sampah (TF 4)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Bank Sampah List (dengan Saldo)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/nasabah/laporan-sampah/bank-sampah-list",
+					"host": ["{{base_url}}"],
+					"path": ["api", "nasabah", "laporan-sampah", "bank-sampah-list"]
+				},
+				"description": "Mendapatkan daftar bank sampah yang terdaftar oleh nasabah beserta saldo tabungan"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/laporan-sampah/bank-sampah-list",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "laporan-sampah", "bank-sampah-list"]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"nama_bank_sampah\": \"Bank Sampah Sejahtera\",\n            \"alamat_bank_sampah\": \"Jl. Raya No. 123\",\n            \"kode_nasabah\": \"NS001\",\n            \"saldo\": 150000\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Check Nasabah Status",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/nasabah/laporan-sampah/check-nasabah-status",
+					"host": ["{{base_url}}"],
+					"path": ["api", "nasabah", "laporan-sampah", "check-nasabah-status"]
+				},
+				"description": "Mengecek apakah user terdaftar sebagai nasabah di bank sampah manapun"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Laporan Sampah Summary",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bank_sampah_id\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/nasabah/laporan-sampah/summary",
+					"host": ["{{base_url}}"],
+					"path": ["api", "nasabah", "laporan-sampah", "summary"]
+				},
+				"description": "Mendapatkan ringkasan laporan sampah (total berat sampah terpilahkan dan total penjualan)"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bank_sampah_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/laporan-sampah/summary",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "laporan-sampah", "summary"]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"tonase\": {\n            \"total_berat\": 125.5,\n            \"total_item\": 45\n        },\n        \"penjualan\": {\n            \"total_saldo\": 250000,\n            \"total_transaksi\": 10\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Tonase Sampah Per Kategori",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bank_sampah_id\": 1,\n    \"jenis_sampah\": \"kering\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/nasabah/laporan-sampah/tonase-per-kategori",
+					"host": ["{{base_url}}"],
+					"path": ["api", "nasabah", "laporan-sampah", "tonase-per-kategori"]
+				},
+				"description": "Mendapatkan data tonase sampah per sub kategori (top 5)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Tren Tonase Sampah",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bank_sampah_id\": 1,\n    \"jenis_sampah\": \"kering\",\n    \"periode\": \"mingguan\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/nasabah/laporan-sampah/tren-tonase",
+					"host": ["{{base_url}}"],
+					"path": ["api", "nasabah", "laporan-sampah", "tren-tonase"]
+				},
+				"description": "Mendapatkan tren tonase sampah (mingguan/bulanan/tahunan)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Riwayat Tonase Sampah",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bank_sampah_id\": 1,\n    \"per_page\": 10\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/nasabah/laporan-sampah/riwayat-tonase",
+					"host": ["{{base_url}}"],
+					"path": ["api", "nasabah", "laporan-sampah", "riwayat-tonase"]
+				},
+				"description": "Mendapatkan riwayat setoran sampah (tonase) dengan pagination"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Penjualan Sampah Per Kategori",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bank_sampah_id\": 1,\n    \"jenis_sampah\": \"kering\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/nasabah/laporan-sampah/penjualan-per-kategori",
+					"host": ["{{base_url}}"],
+					"path": ["api", "nasabah", "laporan-sampah", "penjualan-per-kategori"]
+				},
+				"description": "Mendapatkan data penjualan sampah per kategori (kering/basah)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Tren Penjualan Sampah",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bank_sampah_id\": 1,\n    \"jenis_sampah\": \"kering\",\n    \"periode\": \"mingguan\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/nasabah/laporan-sampah/tren-penjualan",
+					"host": ["{{base_url}}"],
+					"path": ["api", "nasabah", "laporan-sampah", "tren-penjualan"]
+				},
+				"description": "Mendapatkan tren penjualan sampah (mingguan/bulanan/tahunan)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Riwayat Penjualan Sampah",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bank_sampah_id\": 1,\n    \"per_page\": 10\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/nasabah/laporan-sampah/riwayat-penjualan",
+					"host": ["{{base_url}}"],
+					"path": ["api", "nasabah", "laporan-sampah", "riwayat-penjualan"]
+				},
+				"description": "Mendapatkan riwayat penjualan sampah dengan pagination"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Dashboard (All Data)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bank_sampah_id\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/nasabah/laporan-sampah/dashboard",
+					"host": ["{{base_url}}"],
+					"path": ["api", "nasabah", "laporan-sampah", "dashboard"]
+				},
+				"description": "Mendapatkan semua data dashboard laporan sampah sekaligus"
+			},
+			"response": []
+		}
+	]
+}

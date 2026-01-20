@@ -1,0 +1,508 @@
+{
+	"info": {
+		"_postman_id": "bank-sampah-api-v2",
+		"name": "Bank Sampah API v2 (Improved)",
+		"description": "Updated Bank Sampah API with standardized response structure and new features",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public Endpoints",
+			"item": [
+				{
+					"name": "Get All Bank Sampah (List)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/bank-sampah?lat=-7.2575&lng=112.7521&radius_km=10&kategori=kering&per_page=20&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "bank-sampah"],
+							"query": [
+								{
+									"key": "q",
+									"value": "mojo",
+									"description": "Keyword search untuk nama bank sampah",
+									"disabled": true
+								},
+								{
+									"key": "lat",
+									"value": "-7.2575",
+									"description": "Latitude user untuk kalkulasi jarak"
+								},
+								{
+									"key": "lng",
+									"value": "112.7521",
+									"description": "Longitude user untuk kalkulasi jarak"
+								},
+								{
+									"key": "radius_km",
+									"value": "10",
+									"description": "Radius pencarian dalam kilometer (default: 10)"
+								},
+								{
+									"key": "kategori",
+									"value": "kering",
+									"description": "Filter kategori: kering, basah, semua"
+								},
+								{
+									"key": "provinsi_id",
+									"value": "",
+									"description": "Filter berdasarkan provinsi ID",
+									"disabled": true
+								},
+								{
+									"key": "kabupaten_id",
+									"value": "",
+									"description": "Filter berdasarkan kabupaten/kota ID",
+									"disabled": true
+								},
+								{
+									"key": "kecamatan_id",
+									"value": "",
+									"description": "Filter berdasarkan kecamatan ID",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "distance",
+									"description": "Sort by: distance atau name (default: distance jika ada lat/lng)"
+								},
+								{
+									"key": "per_page",
+									"value": "20",
+									"description": "Items per page (default: 20)"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Current page number (default: 1)"
+								}
+							]
+						},
+						"description": "Get list of bank sampah with comprehensive filtering options. No authentication required."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bank Sampah Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/bank-sampah/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "bank-sampah", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Bank Sampah ID"
+								}
+							]
+						},
+						"description": "Get detailed information about a specific bank sampah. No authentication required."
+					},
+					"response": []
+				}
+			],
+			"description": "Public endpoints that don't require authentication"
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Get Dashboard Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/dashboard/stats",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "dashboard", "stats"]
+						},
+						"description": "Get dashboard statistics for authenticated user including total saldo, tonase, setoran, and bank sampah count."
+					},
+					"response": []
+				}
+			],
+			"description": "Dashboard related endpoints"
+		},
+		{
+			"name": "Bank Sampah (Authenticated)",
+			"item": [
+				{
+					"name": "Get Top Frequency Bank Sampah",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/bank-sampah/top-frequency",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "bank-sampah", "top-frequency"]
+						},
+						"description": "Get top 5 most frequently visited bank sampah based on user's transaction history."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bank Sampah List (Old - Index)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/bank-sampah?keyword=mojo&status_operasional=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "bank-sampah"],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "mojo",
+									"description": "Search by bank sampah name"
+								},
+								{
+									"key": "status_operasional",
+									"value": "1",
+									"description": "Filter by operational status"
+								},
+								{
+									"key": "kategori_sampah",
+									"value": "0",
+									"description": "Filter by category: 0=kering, 1=basah",
+									"disabled": true
+								},
+								{
+									"key": "latitude",
+									"value": "-7.2575",
+									"description": "User latitude for distance calculation",
+									"disabled": true
+								},
+								{
+									"key": "longitude",
+									"value": "112.7521",
+									"description": "User longitude for distance calculation",
+									"disabled": true
+								},
+								{
+									"key": "radius",
+									"value": "10",
+									"description": "Search radius in km",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Legacy endpoint - now uses standardized response with BankSampahListResource"
+					},
+					"response": []
+				},
+				{
+					"name": "Find Nearby Bank Sampah",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"latitude\": -7.2575,\n    \"longitude\": 112.7521,\n    \"radius\": 10,\n    \"kategori_sampah\": 0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/bank-sampah/find-nearby",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "bank-sampah", "find-nearby"]
+						},
+						"description": "Find bank sampah near user's location. Now uses standardized response."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User's Bank Sampah List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/bank-sampah/list",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "bank-sampah", "list"]
+						},
+						"description": "Get list of bank sampah where user is an active member."
+					},
+					"response": []
+				},
+				{
+					"name": "Map Filter Bank Sampah",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"latitude\": -7.2575,\n    \"longitude\": 112.7521,\n    \"radius\": 10,\n    \"kategori_sampah\": 0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/bank-sampah/map-filter",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "bank-sampah", "map-filter"]
+						},
+						"description": "Filter bank sampah for map view with real-time operational status."
+					},
+					"response": []
+				}
+			],
+			"description": "Bank Sampah endpoints that require authentication"
+		},
+		{
+			"name": "Penarikan Saldo",
+			"item": [
+				{
+					"name": "Get Withdrawal History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/penarikan-saldo?page=1&per_page=20",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "penarikan-saldo"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Get withdrawal history for authenticated user with pagination."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Withdrawal Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "bank_sampah_id",
+									"value": "1",
+									"type": "text",
+									"description": "Bank Sampah ID"
+								},
+								{
+									"key": "jumlah_penarikan",
+									"value": "50000",
+									"type": "text",
+									"description": "Withdrawal amount"
+								},
+								{
+									"key": "foto_buku_tabungan",
+									"type": "file",
+									"description": "Photo of savings book (required)",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/penarikan-saldo",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "penarikan-saldo"]
+						},
+						"description": "Create a new withdrawal request. Requires photo of savings book. Returns verification code."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Withdrawal Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/penarikan-saldo/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "penarikan-saldo", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Withdrawal ID"
+								}
+							]
+						},
+						"description": "Get detailed information about a specific withdrawal request."
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Withdrawal (Petugas)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/penarikan-saldo/:id/approve",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "penarikan-saldo", ":id", "approve"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Withdrawal ID"
+								}
+							]
+						},
+						"description": "Approve a withdrawal request. Only for petugas/staff. Changes status from pending to approved."
+					},
+					"response": []
+				},
+				{
+					"name": "Complete Withdrawal (Nasabah)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"kode_verifikasi\": \"ABC123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/nasabah/penarikan-saldo/:id/complete",
+							"host": ["{{base_url}}"],
+							"path": ["api", "nasabah", "penarikan-saldo", ":id", "complete"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Withdrawal ID"
+								}
+							]
+						},
+						"description": "Complete a withdrawal with verification code. Deducts balance from member account. Requires approved status."
+					},
+					"response": []
+				}
+			],
+			"description": "Withdrawal (Penarikan Saldo) endpoints"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "your-auth-token-here",
+			"type": "string"
+		}
+	]
+}

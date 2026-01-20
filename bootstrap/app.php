@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'api.version' => \App\Http\Middleware\ApiVersionMiddleware::class,
+            'api.deprecated' => \App\Http\Middleware\DeprecationWarningMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

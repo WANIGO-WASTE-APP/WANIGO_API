@@ -31,7 +31,8 @@ class KatalogSampahController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => $validator->errors()->first()
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
             ], 422);
         }
 
@@ -60,9 +61,13 @@ class KatalogSampahController extends Controller
         }
 
         // Query katalog sampah - Gunakan cara baru dengan sub_kategori
+        // Filter inactive items by default (status_aktif = true)
         $query = KatalogSampah::with('subKategori.kategoriSampah')
             ->where('bank_sampah_id', $bankSampahId)
-            ->where('status_aktif', true);
+            ->where('status_aktif', true)
+            ->whereNotNull('nama_item_sampah')
+            ->whereNotNull('harga_per_kg')
+            ->where('harga_per_kg', '>', 0);
 
         // Filter berdasarkan kategori jika ada
         if ($request->has('kode_kategori')) {
@@ -92,6 +97,10 @@ class KatalogSampahController extends Controller
             $item->kategori_utama = $item->kategoriSampahText;
             $item->sub_kategori = $item->subKategoriText;
             $item->harga_format = $item->hargaFormat;
+            // Add default placeholder for missing images
+            $item->gambar_url = $item->gambar_item_sampah 
+                ? url('storage/' . $item->gambar_item_sampah) 
+                : url('images/default-waste-item.png');
         }
 
         // Dapatkan daftar sub-kategori untuk digunakan di button group filter UI
@@ -120,6 +129,7 @@ class KatalogSampahController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => 'Katalog sampah berhasil diambil',
             'data' => [
                 'bank_sampah' => [
                     'id' => $bankSampah->id,
@@ -148,7 +158,13 @@ class KatalogSampahController extends Controller
     public function show($id)
     {
         $userId = Auth::id();
-        $katalogSampah = KatalogSampah::with('subKategori.kategoriSampah')->find($id);
+        $katalogSampah = KatalogSampah::with('subKategori.kategoriSampah')
+            ->where('id', $id)
+            ->where('status_aktif', true)
+            ->whereNotNull('nama_item_sampah')
+            ->whereNotNull('harga_per_kg')
+            ->where('harga_per_kg', '>', 0)
+            ->first();
 
         if (!$katalogSampah) {
             return response()->json([
@@ -173,9 +189,14 @@ class KatalogSampahController extends Controller
         $katalogSampah->kategori_utama = $katalogSampah->kategoriSampahText;
         $katalogSampah->sub_kategori = $katalogSampah->subKategoriText;
         $katalogSampah->harga_format = $katalogSampah->hargaFormat;
+        // Add default placeholder for missing images
+        $katalogSampah->gambar_url = $katalogSampah->gambar_item_sampah 
+            ? url('storage/' . $katalogSampah->gambar_item_sampah) 
+            : url('images/default-waste-item.png');
 
         return response()->json([
             'success' => true,
+            'message' => 'Detail item sampah berhasil diambil',
             'data' => $katalogSampah
         ]);
     }
@@ -220,6 +241,9 @@ class KatalogSampahController extends Controller
         $katalogSampah = KatalogSampah::with('subKategori.kategoriSampah')
             ->where('bank_sampah_id', $bankSampahId)
             ->where('status_aktif', true)
+            ->whereNotNull('nama_item_sampah')
+            ->whereNotNull('harga_per_kg')
+            ->where('harga_per_kg', '>', 0)
             ->where(function($query) use ($keyword) {
                 $query->where('nama_item_sampah', 'like', "%{$keyword}%")
                       ->orWhere('deskripsi_item_sampah', 'like', "%{$keyword}%");
@@ -231,10 +255,15 @@ class KatalogSampahController extends Controller
             $item->kategori_utama = $item->kategoriSampahText;
             $item->sub_kategori = $item->subKategoriText;
             $item->harga_format = $item->hargaFormat;
+            // Add default placeholder for missing images
+            $item->gambar_url = $item->gambar_item_sampah 
+                ? url('storage/' . $item->gambar_item_sampah) 
+                : url('images/default-waste-item.png');
         }
 
         return response()->json([
             'success' => true,
+            'message' => 'Pencarian item sampah berhasil',
             'data' => $katalogSampah
         ]);
     }
@@ -280,7 +309,10 @@ class KatalogSampahController extends Controller
         // Query katalog sampah dengan relasi sub_kategori
         $query = KatalogSampah::with('subKategori.kategoriSampah')
             ->where('bank_sampah_id', $bankSampahId)
-            ->where('status_aktif', true);
+            ->where('status_aktif', true)
+            ->whereNotNull('nama_item_sampah')
+            ->whereNotNull('harga_per_kg')
+            ->where('harga_per_kg', '>', 0);
 
         // Filter berdasarkan kategori utama jika ada
         if ($request->has('kode_kategori')) {
@@ -335,7 +367,10 @@ class KatalogSampahController extends Controller
             $item->sub_kategori = $item->subKategoriText;
             $item->harga_format = $item->hargaFormat;
             $item->sub_kategori_nama = $item->subKategori ? $item->subKategori->nama_sub_kategori : '';
-            $item->gambar_url = $item->gambar_item_sampah ? url('storage/' . $item->gambar_item_sampah) : null;
+            // Add default placeholder for missing images
+            $item->gambar_url = $item->gambar_item_sampah 
+                ? url('storage/' . $item->gambar_item_sampah) 
+                : url('images/default-waste-item.png');
         }
 
         // Ambil informasi bank sampah untuk tampilan
@@ -365,6 +400,7 @@ class KatalogSampahController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => 'Katalog sampah untuk setoran berhasil diambil',
             'data' => [
                 'bank_sampah' => [
                     'id' => $bankSampah->id,
@@ -431,6 +467,9 @@ class KatalogSampahController extends Controller
             ->where('bank_sampah_id', $bankSampahId)
             ->where('sub_kategori_sampah_id', $subKategoriId)
             ->where('status_aktif', true)
+            ->whereNotNull('nama_item_sampah')
+            ->whereNotNull('harga_per_kg')
+            ->where('harga_per_kg', '>', 0)
             ->get();
 
         // Tandai item yang sudah dipilih
@@ -449,11 +488,15 @@ class KatalogSampahController extends Controller
             $item->kategori_utama = $item->kategoriSampahText;
             $item->sub_kategori = $item->subKategoriText;
             $item->harga_format = $item->hargaFormat;
-            $item->gambar_url = $item->gambar_item_sampah ? url('storage/' . $item->gambar_item_sampah) : null;
+            // Add default placeholder for missing images
+            $item->gambar_url = $item->gambar_item_sampah 
+                ? url('storage/' . $item->gambar_item_sampah) 
+                : url('images/default-waste-item.png');
         }
 
         return response()->json([
             'success' => true,
+            'message' => 'Katalog sampah berdasarkan sub-kategori berhasil diambil',
             'data' => [
                 'sub_kategori' => [
                     'id' => $subKategori->id,

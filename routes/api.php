@@ -12,6 +12,9 @@ use App\Http\Controllers\API\Nasabah\SubKategoriSampahController;
 use App\Http\Controllers\API\Nasabah\JadwalSampahController;
 use App\Http\Controllers\API\Nasabah\ProfilBankSampahController;
 use App\Http\Controllers\API\Nasabah\LaporanSampahController;
+use App\Http\Controllers\API\Nasabah\BankSampahController;
+use App\Http\Controllers\API\Nasabah\DashboardController;
+use App\Http\Controllers\API\Nasabah\PenarikanSaldoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +28,12 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
+// Public Bank Sampah Endpoints (no auth required)
+Route::middleware('api.version')->group(function () {
+    Route::get('/bank-sampah', [BankSampahController::class, 'getAllBankSampah']);
+    Route::get('/bank-sampah/{id}', [BankSampahController::class, 'show']);
+});
+
 // Rute yang memerlukan otentikasi
 Route::middleware('auth:sanctum')->group(function () {
     // Rute untuk semua pengguna
@@ -34,15 +43,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile-status', [AuthController::class, 'checkProfileStatus']);
 
     // Rute khusus nasabah
-    Route::prefix('nasabah')->group(function () {
+    Route::prefix('nasabah')->middleware('api.version')->group(function () {
+        // Dashboard
+        Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
+
+        // Bank Sampah
+        Route::get('/bank-sampah/top-frequency', [BankSampahController::class, 'getTopFrequency']);
+
         // Profil Nasabah
         Route::get('/profile', [ProfilNasabahController::class, 'getProfile']);
         Route::post('/profile/step1', [ProfilNasabahController::class, 'updateProfileStep1']);
         Route::post('/profile/step2', [ProfilNasabahController::class, 'updateProfileStep2']);
         Route::post('/profile/step3', [ProfilNasabahController::class, 'updateProfileStep3']);
 
-        // Profil Bank Sampah - Format asli
-        Route::prefix('bank-sampah-profil')->group(function () {
+        // Profil Bank Sampah - Format asli (DEPRECATED)
+        Route::prefix('bank-sampah-profil')->middleware('api.deprecated:/api/bank-sampah,2026-03-21')->group(function () {
             Route::get('/{id}', [ProfilBankSampahController::class, 'getBankSampah']);
             Route::get('/{id}/katalog', [ProfilBankSampahController::class, 'getKatalogSampah']);
             Route::get('/{id}/sub-kategori', [ProfilBankSampahController::class, 'getSubKategoriSampah']);
@@ -165,6 +180,15 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/by-bank-sampah', [SubKategoriSampahController::class, 'getSubKategori']);
             Route::post('/katalog', [SubKategoriSampahController::class, 'getKatalogBySubKategori']);
             Route::post('/for-setoran', [SubKategoriSampahController::class, 'getKatalogForSetoran']);
+        });
+
+        // Penarikan Saldo
+        Route::prefix('penarikan-saldo')->group(function () {
+            Route::get('/', [PenarikanSaldoController::class, 'index']);
+            Route::post('/', [PenarikanSaldoController::class, 'create']);
+            Route::get('/{id}', [PenarikanSaldoController::class, 'show']);
+            Route::post('/{id}/approve', [PenarikanSaldoController::class, 'approve']);
+            Route::post('/{id}/complete', [PenarikanSaldoController::class, 'complete']);
         });
     });
 

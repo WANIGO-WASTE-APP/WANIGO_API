@@ -20,6 +20,7 @@ class BankSampah extends Model
         'kode_admin',
         'alamat_bank_sampah',
         'deskripsi',
+        'insight',
         'latitude',
         'longitude',
         'status_operasional',
