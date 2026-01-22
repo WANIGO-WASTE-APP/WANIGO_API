@@ -43,9 +43,17 @@ class KatalogSampah extends Model
     /**
      * Get the sub kategori sampah for this item.
      */
-    public function subKategori(): BelongsTo
+    public function subKategoriSampah(): BelongsTo
     {
         return $this->belongsTo(SubKategoriSampah::class, 'sub_kategori_sampah_id');
+    }
+
+    /**
+     * Alias for subKategoriSampah relationship (backward compatibility).
+     */
+    public function subKategori(): BelongsTo
+    {
+        return $this->subKategoriSampah();
     }
 
     /**
@@ -68,6 +76,17 @@ class KatalogSampah extends Model
     }
 
     /**
+     * Alias for scopeAktif (backward compatibility).
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('status_aktif', true);
+    }
+
+    /**
      * Scope a query to filter by kategori.
      *
      * Compat method for old kategori field
@@ -82,7 +101,28 @@ class KatalogSampah extends Model
     }
 
     /**
+     * Scope to filter by kategori (kering/basah/semua).
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $kategori
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByKategori($query, $kategori)
+    {
+        if ($kategori === 'kering') {
+            return $query->where('kategori_sampah', 0);
+        } elseif ($kategori === 'basah') {
+            return $query->where('kategori_sampah', 1);
+        }
+        return $query; // 'semua' or invalid
+    }
+
+    /**
      * Scope to filter by sub kategori sampah id
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  int  $subKategoriId
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSubKategori($query, $subKategoriId)
     {
@@ -90,7 +130,20 @@ class KatalogSampah extends Model
     }
 
     /**
+     * Scope to filter by sub kategori sampah id (alias).
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  int  $subKategoriId
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeBySubKategori($query, $subKategoriId)
+    {
+        return $query->where('sub_kategori_sampah_id', $subKategoriId);
+    }
+
+    /**
      * Scope to filter items by the main kategori (kering/basah)
+     * @deprecated Use scopeByKategori instead
      */
     public function scopeByKategoriUtama($query, $kategoriKode)
     {
@@ -104,13 +157,7 @@ class KatalogSampah extends Model
      */
     public function scopeKering($query)
     {
-        // Cara baru menggunakan relasi
-        return $query->whereHas('subKategori.kategoriSampah', function($q) {
-            $q->where('kode_kategori', KategoriSampah::KERING);
-        });
-
-        // Atau cara lama sebagai fallback
-        // return $query->where('kategori_sampah', 0);
+        return $query->where('kategori_sampah', 0);
     }
 
     /**
@@ -118,13 +165,7 @@ class KatalogSampah extends Model
      */
     public function scopeBasah($query)
     {
-        // Cara baru menggunakan relasi
-        return $query->whereHas('subKategori.kategoriSampah', function($q) {
-            $q->where('kode_kategori', KategoriSampah::BASAH);
-        });
-
-        // Atau cara lama sebagai fallback
-        // return $query->where('kategori_sampah', 1);
+        return $query->where('kategori_sampah', 1);
     }
 
     /**
@@ -138,19 +179,26 @@ class KatalogSampah extends Model
     }
 
     /**
-     * Get kategori sampah text
+     * Get kategori sampah text (kering/basah).
      *
      * @return string
      */
     public function getKategoriSampahTextAttribute()
     {
-        // Periksa apakah telah migrasi ke sistem baru
-        if ($this->subKategori && $this->subKategori->kategoriSampah) {
-            return $this->subKategori->kategoriSampah->nama_kategori;
-        }
+        return $this->kategori_sampah === 0 ? 'kering' : 'basah';
+    }
 
-        // Fallback ke sistem lama
-        return $this->kategori_sampah == 0 ? 'Sampah Kering' : 'Sampah Basah';
+    /**
+     * Get gambar item sampah URL with placeholder fallback.
+     *
+     * @return string
+     */
+    public function getGambarItemSampahUrlAttribute()
+    {
+        if ($this->gambar_item_sampah) {
+            return asset('storage/' . $this->gambar_item_sampah);
+        }
+        return asset('images/placeholder-waste-item.png');
     }
 
     /**

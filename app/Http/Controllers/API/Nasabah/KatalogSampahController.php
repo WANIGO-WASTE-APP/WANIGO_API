@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Nasabah;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\KatalogSampahResource;
 use App\Models\KatalogSampah;
 use App\Models\BankSampah;
 use App\Models\SubKategoriSampah;
@@ -580,6 +581,78 @@ class KatalogSampahController extends Controller
                     'kode' => $kategori->kode_kategori
                 ],
                 'sub_kategori' => $subKategoriList
+            ]
+        ]);
+    }
+
+    /**
+     * Get katalog items for a bank sampah with filtering (New API endpoint).
+     * 
+     * GET /api/bank-sampah/{bank_sampah_id}/katalog
+     * 
+     * Query params:
+     * - kategori: kering|basah|semua (default: semua)
+     * - sub_kategori_id: integer (optional)
+     * - per_page: integer (default: 20)
+     * - page: integer (default: 1)
+     * 
+     * Requirements: 8.1, 8.2, 8.3, 8.7, 8.8, 8.9
+     */
+    public function getKatalogByBank(Request $request, $bankSampahId)
+    {
+        // Validate query parameters
+        $validator = Validator::make($request->all(), [
+            'kategori' => 'sometimes|in:kering,basah,semua',
+            'sub_kategori_id' => 'sometimes|exists:sub_kategori_sampah,id',
+            'per_page' => 'sometimes|integer|min:1|max:100',
+            'page' => 'sometimes|integer|min:1',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        
+        // Build query with eager loading
+        $query = KatalogSampah::with(['subKategoriSampah'])
+            ->where('bank_sampah_id', $bankSampahId)
+            ->where('status_aktif', true);
+        
+        // Filter by kategori (kering/basah/semua)
+        $kategori = $request->get('kategori', 'semua');
+        if ($kategori !== 'semua') {
+            $query->byKategori($kategori);
+        }
+        
+        // Filter by sub_kategori_id if provided
+        if ($request->filled('sub_kategori_id')) {
+            $query->bySubKategori($request->sub_kategori_id);
+        }
+        
+        // Order by sub_kategori urutan, then by nama_item_sampah
+        $query->leftJoin('sub_kategori_sampah', 'katalog_sampah.sub_kategori_sampah_id', '=', 'sub_kategori_sampah.id')
+            ->orderBy('sub_kategori_sampah.urutan', 'asc')
+            ->orderBy('katalog_sampah.nama_item_sampah', 'asc')
+            ->select('katalog_sampah.*');
+        
+        // Pagination
+        $perPage = $request->get('per_page', 20);
+        $katalog = $query->paginate($perPage);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Katalog sampah berhasil diambil',
+            'data' => KatalogSampahResource::collection($katalog),
+            'meta' => [
+                'current_page' => $katalog->currentPage(),
+                'per_page' => $katalog->perPage(),
+                'total' => $katalog->total(),
+                'last_page' => $katalog->lastPage(),
+                'from' => $katalog->firstItem(),
+                'to' => $katalog->lastItem(),
             ]
         ]);
     }

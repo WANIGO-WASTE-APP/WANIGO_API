@@ -15,18 +15,23 @@ class SubKategoriSampah extends Model
 
     protected $fillable = [
         'bank_sampah_id',
-        'kategori_sampah_id',
+        'kategori_sampah_id', // Keep for backward compatibility during migration
+        'kategori_sampah', // New field
         'nama_sub_kategori',
         'kode_sub_kategori',
+        'slug', // New field
         'deskripsi',
         'icon',
         'warna',
         'urutan',
-        'status_aktif',
+        'status_aktif', // Keep for backward compatibility during migration
+        'is_active', // New field
     ];
 
     protected $casts = [
         'status_aktif' => 'boolean',
+        'is_active' => 'boolean',
+        'kategori_sampah' => 'integer',
         'urutan' => 'integer',
     ];
 
@@ -63,6 +68,14 @@ class SubKategoriSampah extends Model
     }
 
     /**
+     * Scope untuk sub-kategori aktif (new field).
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    /**
      * Scope untuk sub-kategori berdasarkan kategori utama.
      */
     public function scopeKategori($query, $kategoriId)
@@ -75,9 +88,8 @@ class SubKategoriSampah extends Model
      */
     public function scopeKering($query)
     {
-        return $query->whereHas('kategoriSampah', function ($q) {
-            $q->where('kode_kategori', KategoriSampah::KERING);
-        });
+        // New implementation using kategori_sampah field
+        return $query->where('kategori_sampah', 0);
     }
 
     /**
@@ -85,9 +97,29 @@ class SubKategoriSampah extends Model
      */
     public function scopeBasah($query)
     {
-        return $query->whereHas('kategoriSampah', function ($q) {
-            $q->where('kode_kategori', KategoriSampah::BASAH);
-        });
+        // New implementation using kategori_sampah field
+        return $query->where('kategori_sampah', 1);
+    }
+
+    /**
+     * Scope untuk filter berdasarkan kategori (kering/basah/semua).
+     */
+    public function scopeByKategori($query, $kategori)
+    {
+        if ($kategori === 'kering') {
+            return $query->kering();
+        } elseif ($kategori === 'basah') {
+            return $query->basah();
+        }
+        return $query; // 'semua' or invalid
+    }
+
+    /**
+     * Scope untuk filter berdasarkan bank sampah.
+     */
+    public function scopeForBank($query, $bankSampahId)
+    {
+        return $query->where('bank_sampah_id', $bankSampahId);
     }
 
     /**
@@ -96,6 +128,48 @@ class SubKategoriSampah extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('urutan', 'asc')->orderBy('nama_sub_kategori', 'asc');
+    }
+
+    /**
+     * Accessor untuk mendapatkan teks kategori sampah.
+     */
+    public function getKategoriSampahTextAttribute()
+    {
+        return $this->kategori_sampah === 0 ? 'kering' : 'basah';
+    }
+
+    /**
+     * Mutator untuk nama sub kategori dengan auto-slug generation.
+     */
+    public function setNamaSubKategoriAttribute($value)
+    {
+        $this->attributes['nama_sub_kategori'] = $value;
+        
+        // Auto-generate slug if not set
+        if (empty($this->attributes['slug'])) {
+            $this->attributes['slug'] = $this->generateUniqueSlug($value);
+        }
+    }
+
+    /**
+     * Helper method untuk generate unique slug.
+     */
+    protected function generateUniqueSlug($name)
+    {
+        $slug = \Illuminate\Support\Str::slug($name);
+        $originalSlug = $slug;
+        $counter = 1;
+        
+        while (static::where('bank_sampah_id', $this->bank_sampah_id)
+            ->where('kategori_sampah', $this->kategori_sampah)
+            ->where('slug', $slug)
+            ->where('id', '!=', $this->id ?? 0)
+            ->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+        
+        return $slug;
     }
 
     /**

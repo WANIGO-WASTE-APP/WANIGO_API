@@ -194,7 +194,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Rute khusus bank sampah
     Route::prefix('bank-sampah')->group(function () {
-        // Route untuk bank sampah akan ditambahkan nanti
+        // Katalog API endpoint (Requirements 8.1, 8.2, 8.3, 8.7, 8.8, 8.9)
+        Route::get('/{bank_sampah_id}/katalog', [KatalogSampahController::class, 'getKatalogByBank']);
+        
+        // Sub-Kategori API endpoint (Requirements 9.1, 9.2, 9.3, 9.7, 9.8, 9.9)
+        Route::get('/{bank_sampah_id}/sub-kategori', [SubKategoriSampahController::class, 'getSubKategoriByBank']);
     });
 
     // Rute khusus industri

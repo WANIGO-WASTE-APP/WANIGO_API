@@ -198,6 +198,78 @@ class SubKategoriSampahController extends Controller
     }
 
     /**
+     * Get active sub-categories for a bank sampah
+     * 
+     * GET /api/bank-sampah/{bank_sampah_id}/sub-kategori
+     * 
+     * Query params:
+     * - kategori: kering|basah|semua (default: semua)
+     * 
+     * @param Request $request
+     * @param int $bankSampahId
+     * @return \Illuminate\Http\Response
+     */
+    public function getSubKategoriByBank(Request $request, $bankSampahId)
+    {
+        $validator = Validator::make($request->all(), [
+            'kategori' => 'sometimes|in:kering,basah,semua',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        
+        $query = SubKategoriSampah::forBank($bankSampahId)
+            ->active()
+            ->orderBy('kategori_sampah', 'asc')
+            ->orderBy('urutan', 'asc');
+        
+        // Filter by kategori
+        $kategori = $request->get('kategori', 'semua');
+        if ($kategori !== 'semua') {
+            $query->byKategori($kategori);
+        }
+        
+        $subKategoris = $query->get();
+        
+        // Group by kategori_sampah
+        $grouped = [
+            'kering' => [],
+            'basah' => []
+        ];
+        
+        foreach ($subKategoris as $subKategori) {
+            $kategoriKey = $subKategori->kategori_sampah === 0 ? 'kering' : 'basah';
+            $grouped[$kategoriKey][] = [
+                'id' => $subKategori->id,
+                'nama_sub_kategori' => $subKategori->nama_sub_kategori,
+                'slug' => $subKategori->slug,
+                'icon' => $subKategori->icon,
+                'warna' => $subKategori->warna,
+                'urutan' => $subKategori->urutan,
+                'kategori_sampah' => $subKategori->kategori_sampah_text,
+            ];
+        }
+        
+        // Remove empty categories if filtered
+        if ($kategori === 'kering') {
+            unset($grouped['basah']);
+        } elseif ($kategori === 'basah') {
+            unset($grouped['kering']);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Sub kategori sampah berhasil diambil',
+            'data' => $grouped
+        ]);
+    }
+
+    /**
      * Mendapatkan katalog sampah untuk pilihan setoran berdasarkan sub-kategori.
      *
      * @param Request $request

@@ -1,0 +1,1663 @@
+{
+  "info": {
+    "_postman_id": "wanigo-complete-2026-01-22",
+    "name": "WANIGO API - Complete Collection (2026)",
+    "description": "Complete API collection for WANIGO Waste Management System including all endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Check Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/check-email",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "check-email"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{test_email}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"{{test_email}}\",\n    \"password\": \"{{test_password}}\",\n    \"password_confirmation\": \"{{test_password}}\",\n    \"phone_number\": \"{{test_phone}}\",\n    \"role\": \"nasabah\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{test_email}}\",\n    \"password\": \"{{test_password}}\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json(); if (jsonData.data && jsonData.data.access_token) { pm.environment.set(\"token\", jsonData.data.access_token); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "logout"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/forgot-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "forgot-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{test_email}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/reset-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "reset-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"token\": \"reset-token\",\n    \"email\": \"{{test_email}}\",\n    \"password\": \"NewPass123!\",\n    \"password_confirmation\": \"NewPass123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/update-profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "update-profile"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated Name\",\n    \"phone_number\": \"08123456789\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/update-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "update-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"current_password\": \"{{test_password}}\",\n    \"password\": \"NewPass123!\",\n    \"password_confirmation\": \"NewPass123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Check Profile Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/profile-status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "profile-status"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Bank Sampah (Public)",
+      "item": [
+        {
+          "name": "Get All Bank Sampah",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bank-sampah",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bank-sampah"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "mojo",
+                  "disabled": true
+                },
+                {
+                  "key": "lat",
+                  "value": "-7.2575"
+                },
+                {
+                  "key": "lng",
+                  "value": "112.7521"
+                },
+                {
+                  "key": "radius_km",
+                  "value": "10"
+                },
+                {
+                  "key": "kategori",
+                  "value": "kering"
+                },
+                {
+                  "key": "sort",
+                  "value": "distance"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Bank Sampah Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bank-sampah/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bank-sampah",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Bank Sampah (Authenticated)",
+      "item": [
+        {
+          "name": "Get Top Frequency",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/bank-sampah/top-frequency",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "bank-sampah",
+                "top-frequency"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Bank Sampah List (Old)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/bank-sampah",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "bank-sampah"
+              ],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "mojo"
+                },
+                {
+                  "key": "status_operasional",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Find Nearby",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/bank-sampah/find-nearby",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "bank-sampah",
+                "find-nearby"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"latitude\": -7.2575,\n    \"longitude\": 112.7521,\n    \"radius\": 10,\n    \"kategori_sampah\": 0\n}"
+            }
+          }
+        },
+        {
+          "name": "Get User's Bank Sampah",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/bank-sampah/list",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "bank-sampah",
+                "list"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Map Filter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/bank-sampah/map-filter",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "bank-sampah",
+                "map-filter"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"latitude\": -7.2575,\n    \"longitude\": 112.7521,\n    \"radius\": 10,\n    \"kategori_sampah\": 0\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Katalog Sampah",
+      "item": [
+        {
+          "name": "Get Katalog by Bank (NEW)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bank-sampah/:bank_sampah_id/katalog",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bank-sampah",
+                ":bank_sampah_id",
+                "katalog"
+              ],
+              "query": [
+                {
+                  "key": "kategori",
+                  "value": "kering"
+                },
+                {
+                  "key": "sub_kategori_id",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "bank_sampah_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "NEW: Get katalog with sub-kategori info, filtering, and pagination"
+          }
+        },
+        {
+          "name": "Get Katalog by Bank (Old)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/katalog-sampah/by-bank",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "katalog-sampah",
+                "by-bank"
+              ],
+              "query": [
+                {
+                  "key": "bank_sampah_id",
+                  "value": "1"
+                },
+                {
+                  "key": "kode_kategori",
+                  "value": "kering"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Katalog Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/katalog-sampah/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "katalog-sampah",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Katalog",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/katalog-sampah/search",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "katalog-sampah",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "bank_sampah_id",
+                  "value": "1"
+                },
+                {
+                  "key": "keyword",
+                  "value": "plastik"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Katalog for Setoran",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/katalog-sampah/for-setoran",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "katalog-sampah",
+                "for-setoran"
+              ],
+              "query": [
+                {
+                  "key": "bank_sampah_id",
+                  "value": "1"
+                },
+                {
+                  "key": "kode_kategori",
+                  "value": "kering"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Sub-Kategori Sampah (NEW)",
+      "item": [
+        {
+          "name": "Get Sub-Kategori by Bank (NEW)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bank-sampah/:bank_sampah_id/sub-kategori",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "bank-sampah",
+                ":bank_sampah_id",
+                "sub-kategori"
+              ],
+              "query": [
+                {
+                  "key": "kategori",
+                  "value": "semua"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "bank_sampah_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "NEW: Get sub-categories grouped by kering/basah with icon, warna, slug"
+          }
+        },
+        {
+          "name": "Get Sub-Kategori List (Old)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/sub-kategori-sampah",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "sub-kategori-sampah"
+              ],
+              "query": [
+                {
+                  "key": "bank_sampah_id",
+                  "value": "1"
+                },
+                {
+                  "key": "kode_kategori",
+                  "value": "kering"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Katalog by Sub-Kategori",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/sub-kategori-sampah/katalog",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "sub-kategori-sampah",
+                "katalog"
+              ],
+              "query": [
+                {
+                  "key": "sub_kategori_id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/dashboard/stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "dashboard",
+                "stats"
+              ]
+            },
+            "description": "Get total_saldo, total_tonase, total_setoran, total_bank_sampah"
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Penarikan Saldo (Withdrawal)",
+      "item": [
+        {
+          "name": "Get Withdrawal History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/penarikan-saldo",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "penarikan-saldo"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Withdrawal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/penarikan-saldo",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "penarikan-saldo"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Withdrawal Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/penarikan-saldo/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "penarikan-saldo",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Approve Withdrawal (Petugas)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/penarikan-saldo/:id/approve",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "penarikan-saldo",
+                ":id",
+                "approve"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "Complete Withdrawal (Nasabah)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/penarikan-saldo/:id/complete",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "penarikan-saldo",
+                ":id",
+                "complete"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"kode_verifikasi\": \"ABC123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Nasabah Profile",
+      "item": [
+        {
+          "name": "Get Nasabah Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Profile Step 1",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/profile/step1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "profile",
+                "step1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"jenis_kelamin\": \"Laki-laki\",\n    \"usia\": \"18 hingga 34 tahun\",\n    \"profesi\": \"Programmer\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Profile Step 2",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/profile/step2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "profile",
+                "step2"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"tahu_memilah_sampah\": \"Sudah tahu\",\n    \"motivasi_memilah_sampah\": \"Menjaga lingkungan\",\n    \"nasabah_bank_sampah\": \"Tidak, belum\",\n    \"kode_bank_sampah\": \"\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Profile Step 3",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/profile/step3",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "profile",
+                "step3"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"frekuensi_memilah_sampah\": \"Setiap minggu\",\n    \"jenis_sampah_dikelola\": \"Plastik\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Education (Edukasi)",
+      "item": [
+        {
+          "name": "Get Modul List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/edukasi/moduls",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "edukasi",
+                "moduls"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Modul Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/edukasi/modul/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "edukasi",
+                "modul",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Video Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/edukasi/video/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "edukasi",
+                "video",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Article Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/edukasi/artikel/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "edukasi",
+                "artikel",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Content Complete",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/edukasi/konten/:id/complete",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "edukasi",
+                "konten",
+                ":id",
+                "complete"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
