@@ -600,60 +600,82 @@ class KatalogSampahController extends Controller
      */
     public function getKatalogByBank(Request $request, $bankSampahId)
     {
-        // Validate query parameters
-        $validator = Validator::make($request->all(), [
-            'kategori' => 'sometimes|in:kering,basah,semua',
-            'sub_kategori_id' => 'sometimes|exists:sub_kategori_sampah,id',
-            'per_page' => 'sometimes|integer|min:1|max:100',
-            'page' => 'sometimes|integer|min:1',
-        ]);
-        
-        if ($validator->fails()) {
+        try {
+            // Validate query parameters
+            $validator = Validator::make($request->all(), [
+                'kategori' => 'sometimes|in:kering,basah,semua',
+                'sub_kategori_id' => 'sometimes|exists:sub_kategori_sampah,id',
+                'per_page' => 'sometimes|integer|min:1|max:100',
+                'page' => 'sometimes|integer|min:1',
+            ]);
+            
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            
+            // Build query with eager loading (avoid join conflicts)
+            $query = KatalogSampah::with(['subKategoriSampah' => function($q) {
+                    $q->select('id', 'nama_sub_kategori', 'slug', 'icon', 'warna', 'urutan');
+                }])
+                ->where('bank_sampah_id', $bankSampahId)
+                ->where('status_aktif', true);
+            
+            // Filter by kategori (kering/basah/semua)
+            $kategori = $request->get('kategori', 'semua');
+            if ($kategori !== 'semua') {
+                if ($kategori === 'kering') {
+                    $query->where('kategori_sampah', 0);
+                } elseif ($kategori === 'basah') {
+                    $query->where('kategori_sampah', 1);
+                }
+            }
+            
+            // Filter by sub_kategori_id if provided
+            if ($request->filled('sub_kategori_id')) {
+                $query->where('sub_kategori_sampah_id', $request->sub_kategori_id);
+            }
+            
+            // Order by nama_item_sampah
+            $query->orderBy('nama_item_sampah', 'asc');
+            
+            // Pagination
+            $perPage = $request->get('per_page', 20);
+            $katalog = $query->paginate($perPage);
+            
+            // Sort by sub_kategori urutan after loading if needed
+            if ($kategori !== 'semua' || $request->filled('sub_kategori_id')) {
+                $items = $katalog->getCollection()->sortBy(function($item) {
+                    return $item->subKategoriSampah ? $item->subKategoriSampah->urutan : 999;
+                })->values();
+                $katalog->setCollection($items);
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Katalog sampah berhasil diambil',
+                'data' => KatalogSampahResource::collection($katalog),
+                'meta' => [
+                    'current_page' => $katalog->currentPage(),
+                    'per_page' => $katalog->perPage(),
+                    'total' => $katalog->total(),
+                    'last_page' => $katalog->lastPage(),
+                    'from' => $katalog->firstItem(),
+                    'to' => $katalog->lastItem(),
+                ]
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error in getKatalogByBank: ' . $e->getMessage());
+            \Log::error($e->getTraceAsString());
+            
             return response()->json([
                 'success' => false,
-                'message' => 'Validasi gagal',
-                'errors' => $validator->errors()
-            ], 422);
+                'message' => 'Terjadi kesalahan saat mengambil data katalog',
+                'error' => config('app.debug') ? $e->getMessage() : 'Server Error'
+            ], 500);
         }
-        
-        // Build query with eager loading
-        $query = KatalogSampah::with(['subKategoriSampah'])
-            ->where('bank_sampah_id', $bankSampahId)
-            ->where('status_aktif', true);
-        
-        // Filter by kategori (kering/basah/semua)
-        $kategori = $request->get('kategori', 'semua');
-        if ($kategori !== 'semua') {
-            $query->byKategori($kategori);
-        }
-        
-        // Filter by sub_kategori_id if provided
-        if ($request->filled('sub_kategori_id')) {
-            $query->bySubKategori($request->sub_kategori_id);
-        }
-        
-        // Order by sub_kategori urutan, then by nama_item_sampah
-        $query->leftJoin('sub_kategori_sampah', 'katalog_sampah.sub_kategori_sampah_id', '=', 'sub_kategori_sampah.id')
-            ->orderBy('sub_kategori_sampah.urutan', 'asc')
-            ->orderBy('katalog_sampah.nama_item_sampah', 'asc')
-            ->select('katalog_sampah.*');
-        
-        // Pagination
-        $perPage = $request->get('per_page', 20);
-        $katalog = $query->paginate($perPage);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Katalog sampah berhasil diambil',
-            'data' => KatalogSampahResource::collection($katalog),
-            'meta' => [
-                'current_page' => $katalog->currentPage(),
-                'per_page' => $katalog->perPage(),
-                'total' => $katalog->total(),
-                'last_page' => $katalog->lastPage(),
-                'from' => $katalog->firstItem(),
-                'to' => $katalog->lastItem(),
-            ]
-        ]);
     }
 }
