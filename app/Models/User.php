@@ -32,6 +32,8 @@ class User extends Authenticatable
         'role',
         'phone_number',
         'email_verified_at', // Ditambahkan untuk verifikasi email
+        'firebase_uid',
+        'avatar_url',
     ];
 
     /**

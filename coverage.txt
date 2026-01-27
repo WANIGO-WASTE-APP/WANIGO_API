@@ -1,0 +1,2113 @@
+PHPUnit 11.5.17 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: D:\Project\WANIGO_API\phpunit.xml
+
+............................................S.EEEEEEEEEEEEE....  63 / 170 ( 37%)
+...................EEEE.EEEE..............S.S..S..RR........EEE 126 / 170 ( 74%)
+EEEEEEE........EEEEEEEEEEEEEEEEEEEEEEE......                    170 / 170 (100%)
+
+Time: 01:49.329, Memory: 60.00 MB
+
+There was 1 PHPUnit test runner warning:
+
+1) No code coverage driver available
+
+--
+
+There were 54 errors:
+
+1) Tests\Unit\KatalogKategoriConsistencyTest::test_validation_passes_when_kategori_matches
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:15, 2026-01-27 09:12:15))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+2) Tests\Unit\KatalogKategoriConsistencyTest::test_validation_fails_when_kategori_does_not_match
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:17, 2026-01-27 09:12:17))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+3) Tests\Unit\KatalogKategoriConsistencyTest::test_validation_passes_when_sub_kategori_id_is_null
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:18, 2026-01-27 09:12:18))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+4) Tests\Unit\KatalogKategoriConsistencyTest::test_validation_fails_when_sub_kategori_does_not_exist
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:18, 2026-01-27 09:12:18))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+5) Tests\Unit\KatalogKategoriConsistencyTest::test_error_message_is_clear_for_kering
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:18, 2026-01-27 09:12:18))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+6) Tests\Unit\KatalogKategoriConsistencyTest::test_error_message_is_clear_for_basah
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:18, 2026-01-27 09:12:18))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+7) Tests\Unit\KatalogKategoriConsistencyTest::test_validation_works_correctly_for_basah_kategori
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:18, 2026-01-27 09:12:18))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogKategoriConsistencyTest.php:24
+
+8) Tests\Unit\KatalogSampahResourceTest::test_resource_includes_all_katalog_fields
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:18, 2026-01-27 09:12:18))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+9) Tests\Unit\KatalogSampahResourceTest::test_resource_includes_kategori_sampah_for_backward_compatibility
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:18, 2026-01-27 09:12:18))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+10) Tests\Unit\KatalogSampahResourceTest::test_resource_includes_sub_kategori_object_with_all_fields
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:18, 2026-01-27 09:12:18))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+11) Tests\Unit\KatalogSampahResourceTest::test_resource_handles_null_sub_kategori_gracefully
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:18, 2026-01-27 09:12:18))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+12) Tests\Unit\KatalogSampahResourceTest::test_resource_works_with_basah_kategori
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:18, 2026-01-27 09:12:18))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+13) Tests\Unit\KatalogSampahResourceTest::test_harga_is_returned_as_float
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "email", "updated_at", "created_at") values (Test Bank Sampah, test@banksampah.com, 2026-01-27 09:12:18, 2026-01-27 09:12:18))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.alamat_bank_sampah
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\KatalogSampahResourceTest.php:24
+
+14) Tests\Unit\SetoranSampahModelTest::test_ongoing_scope_returns_only_pengajuan_and_diproses
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 CHECK constraint failed: status_setoran (Connection: sqlite, SQL: insert into "setoran_sampah" ("user_id", "bank_sampah_id", "tanggal_setoran", "status_setoran", "kode_setoran_sampah", "updated_at", "created_at") values (1, 1, 2026-01-27 09:12:30, pengajuan, TEST001, 2026-01-27 09:12:30, 2026-01-27 09:12:30))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahModelTest.php:63
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 CHECK constraint failed: status_setoran
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahModelTest.php:63
+
+15) Tests\Unit\SetoranSampahModelTest::test_ongoing_scope_excludes_selesai
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 1, 2026-01-27 09:12:30, 2026-01-27 09:12:30))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahModelTest.php:114
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahModelTest.php:114
+
+16) Tests\Unit\SetoranSampahModelTest::test_ongoing_scope_excludes_dibatalkan
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 1, 2026-01-27 09:12:30, 2026-01-27 09:12:30))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahModelTest.php:141
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahModelTest.php:141
+
+17) Tests\Unit\SetoranSampahModelTest::test_completed_scope_returns_only_selesai
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 1, 2026-01-27 09:12:30, 2026-01-27 09:12:30))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahModelTest.php:168
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahModelTest.php:168
+
+18) Tests\Unit\SetoranSampahStatusTest::test_ongoing_scope_returns_pengajuan_and_diproses
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 CHECK constraint failed: status_setoran (Connection: sqlite, SQL: insert into "setoran_sampah" ("user_id", "bank_sampah_id", "tanggal_setoran", "status_setoran", "total_saldo", "total_berat", "kode_setoran_sampah", "updated_at", "created_at") values (1, 1, 2026-01-27 09:12:32, pengajuan, 10000, 5, STR001000012601TEST1, 2026-01-27 09:12:32, 2026-01-27 09:12:32))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahStatusTest.php:43
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 CHECK constraint failed: status_setoran
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahStatusTest.php:43
+
+19) Tests\Unit\SetoranSampahStatusTest::test_ongoing_scope_excludes_selesai
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 CHECK constraint failed: status_setoran (Connection: sqlite, SQL: insert into "setoran_sampah" ("user_id", "bank_sampah_id", "tanggal_setoran", "status_setoran", "total_saldo", "total_berat", "kode_setoran_sampah", "updated_at", "created_at") values (1, 1, 2026-01-27 09:12:32, selesai, 10000, 5, STR001000012601TEST5, 2026-01-27 09:12:32, 2026-01-27 09:12:32))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahStatusTest.php:101
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 CHECK constraint failed: status_setoran
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahStatusTest.php:101
+
+20) Tests\Unit\SetoranSampahStatusTest::test_ongoing_scope_excludes_dibatalkan
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 CHECK constraint failed: status_setoran (Connection: sqlite, SQL: insert into "setoran_sampah" ("user_id", "bank_sampah_id", "tanggal_setoran", "status_setoran", "total_saldo", "total_berat", "kode_setoran_sampah", "updated_at", "created_at") values (1, 1, 2026-01-27 09:12:32, dibatalkan, 10000, 5, STR001000012601TEST6, 2026-01-27 09:12:32, 2026-01-27 09:12:32))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahStatusTest.php:125
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 CHECK constraint failed: status_setoran
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahStatusTest.php:125
+
+21) Tests\Unit\SetoranSampahStatusTest::test_completed_scope_returns_only_selesai
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 CHECK constraint failed: status_setoran (Connection: sqlite, SQL: insert into "setoran_sampah" ("user_id", "bank_sampah_id", "tanggal_setoran", "status_setoran", "total_saldo", "total_berat", "kode_setoran_sampah", "updated_at", "created_at") values (1, 1, 2026-01-27 09:12:32, pengajuan, 10000, 5, STR001000012601TEST7, 2026-01-27 09:12:32, 2026-01-27 09:12:32))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahStatusTest.php:149
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 CHECK constraint failed: status_setoran
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Unit\SetoranSampahStatusTest.php:149
+
+22) Tests\Feature\KatalogByBankEndpointTest::test_endpoint_returns_all_active_items_without_filter
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:49, 2026-01-27 09:12:49))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+23) Tests\Feature\KatalogByBankEndpointTest::test_endpoint_filters_by_kategori_kering
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:49, 2026-01-27 09:12:49))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+24) Tests\Feature\KatalogByBankEndpointTest::test_endpoint_filters_by_kategori_basah
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:49, 2026-01-27 09:12:49))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+25) Tests\Feature\KatalogByBankEndpointTest::test_endpoint_filters_by_sub_kategori_id
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:49, 2026-01-27 09:12:49))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+26) Tests\Feature\KatalogByBankEndpointTest::test_endpoint_validates_invalid_kategori
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:49, 2026-01-27 09:12:49))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+27) Tests\Feature\KatalogByBankEndpointTest::test_endpoint_validates_invalid_sub_kategori_id
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:49, 2026-01-27 09:12:49))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+28) Tests\Feature\KatalogByBankEndpointTest::test_endpoint_supports_pagination
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:49, 2026-01-27 09:12:49))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+29) Tests\Feature\KatalogByBankEndpointTest::test_endpoint_orders_correctly
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:49, 2026-01-27 09:12:49))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+30) Tests\Feature\KatalogByBankEndpointTest::test_endpoint_includes_sub_kategori_information
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:49, 2026-01-27 09:12:49))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+31) Tests\Feature\KatalogByBankEndpointTest::test_endpoint_includes_backward_compatibility_field
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:49, 2026-01-27 09:12:49))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\KatalogByBankEndpointTest.php:24
+
+32) Tests\Feature\SubKategoriByBankEndpointTest::test_endpoint_returns_all_active_sub_categories_grouped
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+33) Tests\Feature\SubKategoriByBankEndpointTest::test_endpoint_filters_by_kategori_kering
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+34) Tests\Feature\SubKategoriByBankEndpointTest::test_endpoint_filters_by_kategori_basah
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+35) Tests\Feature\SubKategoriByBankEndpointTest::test_endpoint_with_kategori_semua_returns_both
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+36) Tests\Feature\SubKategoriByBankEndpointTest::test_endpoint_validates_invalid_kategori
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+37) Tests\Feature\SubKategoriByBankEndpointTest::test_endpoint_orders_by_urutan
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+38) Tests\Feature\SubKategoriByBankEndpointTest::test_endpoint_includes_all_required_fields
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+39) Tests\Feature\SubKategoriByBankEndpointTest::test_endpoint_returns_only_active_sub_categories
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+40) Tests\Feature\SubKategoriByBankEndpointTest::test_endpoint_returns_empty_arrays_when_no_active_sub_categories
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+41) Tests\Feature\SubKategoriByBankEndpointTest::test_endpoint_response_structure_is_correct
+Illuminate\Database\QueryException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat_bank_sampah", "nomor_telepon_publik", "email", "status_operasional", "updated_at", "created_at") values (Test Bank Sampah, Test Address, 081234567890, test@banksampah.com, 1, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+Caused by
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 NOT NULL constraint failed: bank_sampah.latitude
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:568
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:2208
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1408
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1373
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:1212
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1192
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\helpers.php:399
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php:1191
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:23
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2449
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2465
+D:\Project\WANIGO_API\tests\Feature\SubKategoriByBankEndpointTest.php:21
+
+42) Tests\Feature\SubKategoriSampahBackfillMigrationTest::test_backfill_migration_generates_slugs_from_nama_sub_kategori
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahBackfillMigrationTest.php:22
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahBackfillMigrationTest.php:22
+
+43) Tests\Feature\SubKategoriSampahBackfillMigrationTest::test_backfill_migration_handles_slug_collisions
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahBackfillMigrationTest.php:73
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahBackfillMigrationTest.php:73
+
+44) Tests\Feature\SubKategoriSampahBackfillMigrationTest::test_backfill_migration_copies_status_aktif_to_is_active
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahBackfillMigrationTest.php:125
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahBackfillMigrationTest.php:125
+
+45) Tests\Feature\SubKategoriSampahBackfillMigrationTest::test_backfill_migration_converts_kategori_sampah_id_to_tinyint
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahBackfillMigrationTest.php:177
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahBackfillMigrationTest.php:177
+
+46) Tests\Feature\SubKategoriSampahBackfillMigrationTest::test_slug_collisions_are_scoped_to_bank_and_kategori
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahBackfillMigrationTest.php:229
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahBackfillMigrationTest.php:229
+
+47) Tests\Feature\SubKategoriSampahForeignKeyMigrationTest::test_migration_succeeds_with_valid_references
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:34
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:34
+
+48) Tests\Feature\SubKategoriSampahForeignKeyMigrationTest::test_migration_succeeds_with_null_references
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:66
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:66
+
+49) Tests\Feature\SubKategoriSampahForeignKeyMigrationTest::test_migration_fails_with_orphaned_records
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:101
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:101
+
+50) Tests\Feature\SubKategoriSampahForeignKeyMigrationTest::test_migration_provides_detailed_error_for_orphaned_records
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:133
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:133
+
+51) Tests\Feature\SubKategoriSampahForeignKeyMigrationTest::test_foreign_key_prevents_deletion_of_referenced_sub_kategori
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:185
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:185
+
+52) Tests\Feature\SubKategoriSampahForeignKeyMigrationTest::test_foreign_key_allows_deletion_when_no_references
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:219
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:219
+
+53) Tests\Feature\SubKategoriSampahForeignKeyMigrationTest::test_migration_rollback_removes_foreign_key
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:242
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:242
+
+54) Tests\Feature\SubKategoriSampahForeignKeyMigrationTest::test_migration_handles_mixed_valid_and_null_references
+Illuminate\Database\QueryException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat (Connection: sqlite, SQL: insert into "bank_sampah" ("nama_bank_sampah", "alamat", "created_at", "updated_at") values (Test Bank Sampah, Test Address, 2026-01-27 09:12:55, 2026-01-27 09:12:55))
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:822
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:270
+
+Caused by
+PDOException: SQLSTATE[HY000]: General error: 1 table bank_sampah has no column named alamat
+
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:562
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:809
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:776
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:557
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Connection.php:521
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Processors\Processor.php:32
+D:\Project\WANIGO_API\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php:3769
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:317
+D:\Project\WANIGO_API\tests\Feature\SubKategoriSampahForeignKeyMigrationTest.php:270
+
+--
+
+There were 2 risky tests:
+
+1) Tests\Feature\DeprecationWarningMiddlewareIntegrationTest::test_registered_bank_sampah_endpoint_includes_warning_header
+This test did not perform any assertions
+
+D:\Project\WANIGO_API\tests\Feature\DeprecationWarningMiddlewareIntegrationTest.php:84
+
+2) Tests\Feature\DeprecationWarningMiddlewareIntegrationTest::test_endpoints_without_deprecated_fields_have_no_warning_header
+This test did not perform any assertions
+
+D:\Project\WANIGO_API\tests\Feature\DeprecationWarningMiddlewareIntegrationTest.php:121
+
+ERRORS!
+Tests: 170, Assertions: 293, Errors: 54, Warnings: 1, PHPUnit Deprecations: 105, Skipped: 4, Risky: 2.

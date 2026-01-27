@@ -31,7 +31,7 @@ class DetailSetoranController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'setoran_sampah_id' => 'required|exists:setoran_sampah,id',
-            'katalog_sampah_id' => 'required|exists:katalog_sampah,id',
+            'item_sampah_id' => 'required|exists:katalog_sampah,id',
             'berat' => 'sometimes|numeric|min:0.01', // berat bisa kosong pada awal pengajuan
             'foto' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
         ]);
@@ -45,7 +45,7 @@ class DetailSetoranController extends Controller
 
         $userId = Auth::id();
         $setoranId = $request->setoran_sampah_id;
-        $katalogSampahId = $request->katalog_sampah_id;
+        $itemSampahId = $request->item_sampah_id;
 
         // Cek apakah setoran ini milik user yang login
         $setoran = SetoranSampah::where('id', $setoranId)
@@ -68,7 +68,7 @@ class DetailSetoranController extends Controller
         }
 
         // Cek apakah katalog sampah dari bank sampah yang sama
-        $katalogSampah = KatalogSampah::where('id', $katalogSampahId)
+        $katalogSampah = KatalogSampah::where('id', $itemSampahId)
             ->where('bank_sampah_id', $setoran->bank_sampah_id)
             ->first();
 
@@ -81,7 +81,7 @@ class DetailSetoranController extends Controller
 
         // Cek apakah item ini sudah ada di setoran
         $existingDetail = DetailSetoran::where('setoran_sampah_id', $setoranId)
-            ->where('katalog_sampah_id', $katalogSampahId)
+            ->where('item_sampah_id', $itemSampahId)
             ->first();
 
         if ($existingDetail) {
@@ -96,7 +96,7 @@ class DetailSetoranController extends Controller
             // Buat detail setoran baru
             $detailSetoran = new DetailSetoran();
             $detailSetoran->setoran_sampah_id = $setoranId;
-            $detailSetoran->katalog_sampah_id = $katalogSampahId;
+            $detailSetoran->item_sampah_id = $itemSampahId;
             $detailSetoran->berat = $request->berat ?? 0; // Bisa 0 jika hanya pengajuan
             $detailSetoran->harga_per_kg = $katalogSampah->harga_per_kg;
             $detailSetoran->nilai = ($request->berat ?? 0) * $katalogSampah->harga_per_kg;

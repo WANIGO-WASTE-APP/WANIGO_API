@@ -40,6 +40,15 @@ class DetailSetoran extends Model
     }
 
     /**
+     * Alias for itemSampah relationship (for backward compatibility).
+     * @deprecated Use itemSampah() instead
+     */
+    public function katalogSampah()
+    {
+        return $this->itemSampah();
+    }
+
+    /**
      * Calculate saldo based on berat and harga per kg.
      *
      * @param float $berat

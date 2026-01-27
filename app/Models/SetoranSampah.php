@@ -34,10 +34,10 @@ class SetoranSampah extends Model
     /**
      * Konstanta untuk status setoran
      */
-    const STATUS_PENGAJUAN = 'Pengajuan';
-    const STATUS_DIPROSES = 'Diproses';
-    const STATUS_SELESAI = 'Selesai';
-    const STATUS_DIBATALKAN = 'Dibatalkan';
+    const STATUS_PENGAJUAN = 'pengajuan';
+    const STATUS_DIPROSES = 'diproses';
+    const STATUS_SELESAI = 'selesai';
+    const STATUS_DIBATALKAN = 'dibatalkan';
 
     /**
      * Get the user that owns the setoran sampah.
@@ -185,6 +185,46 @@ class SetoranSampah extends Model
     public function scopeDibatalkan($query)
     {
         return $query->where('status_setoran', self::STATUS_DIBATALKAN);
+    }
+
+    /**
+     * Scope a query to only include ongoing setoran (Pengajuan or Diproses).
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOngoing($query)
+    {
+        return $query->whereIn('status_setoran', [
+            self::STATUS_PENGAJUAN,
+            self::STATUS_DIPROSES,
+        ]);
+    }
+
+    /**
+     * Scope a query to only include completed setoran (Selesai).
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCompleted($query)
+    {
+        return $query->where('status_setoran', self::STATUS_SELESAI);
+    }
+
+    /**
+     * Get all valid status values.
+     *
+     * @return array
+     */
+    public static function getValidStatuses(): array
+    {
+        return [
+            self::STATUS_PENGAJUAN,
+            self::STATUS_DIPROSES,
+            self::STATUS_SELESAI,
+            self::STATUS_DIBATALKAN,
+        ];
     }
 
     /**

@@ -398,6 +398,39 @@ class BankSampahController extends Controller
     }
 
     /**
+     * Get registered bank sampah for the authenticated user.
+     * Returns list of bank sampah where user is an active member.
+     * 
+     * Requirements: 2.1, 3.2, 5.1, 5.2
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRegisteredBankSampah(Request $request)
+    {
+        $userId = Auth::id();
+        
+        // Get bank sampah where user is an active member
+        $bankSampahList = BankSampah::with(['jamOperasional', 'katalogSampah'])
+            ->whereHas('members', function($query) use ($userId) {
+                $query->where('user_id', $userId)
+                      ->where('status_keanggotaan', 'aktif');
+            })
+            ->get();
+        
+        // Add member status to each bank sampah
+        foreach ($bankSampahList as $bank) {
+            $bank->member_status = 'aktif';
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar bank sampah terdaftar berhasil diambil',
+            'data' => BankSampahListResource::collection($bankSampahList)
+        ]);
+    }
+
+    /**
      * Get all bank sampah with comprehensive filtering and sorting.
      * Public endpoint for listing all bank sampah.
      *

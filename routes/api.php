@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\Auth\FirebaseAuthController;
 use App\Http\Controllers\API\Nasabah\ProfilNasabahController;
 use App\Http\Controllers\API\Nasabah\EdukasiController;
 use App\Http\Controllers\API\Nasabah\MemberBankSampahController;
@@ -28,8 +29,11 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
+// Firebase Authentication (Requirement 1.1)
+Route::post('/auth/firebase/google', [FirebaseAuthController::class, 'googleSignIn']);
+
 // Public Bank Sampah Endpoints (no auth required)
-Route::middleware('api.version')->group(function () {
+Route::middleware(['api.version', \App\Http\Middleware\AddDeprecationWarnings::class])->group(function () {
     Route::get('/bank-sampah', [BankSampahController::class, 'getAllBankSampah']);
     Route::get('/bank-sampah/{id}', [BankSampahController::class, 'show']);
 });
@@ -43,11 +47,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile-status', [AuthController::class, 'checkProfileStatus']);
 
     // Rute khusus nasabah
-    Route::prefix('nasabah')->middleware('api.version')->group(function () {
+    Route::prefix('nasabah')->middleware(['api.version', \App\Http\Middleware\AddDeprecationWarnings::class])->group(function () {
         // Dashboard
         Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
 
         // Bank Sampah
+        Route::get('/bank-sampah/registered', [BankSampahController::class, 'getRegisteredBankSampah']);
         Route::get('/bank-sampah/top-frequency', [BankSampahController::class, 'getTopFrequency']);
 
         // Profil Nasabah

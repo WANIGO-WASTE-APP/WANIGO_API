@@ -123,4 +123,17 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default Bank Image URL
+    |--------------------------------------------------------------------------
+    |
+    | This value is used as a fallback image URL when a Bank Sampah does not
+    | have a foto_usaha (business photo) set. This ensures all bank sampah
+    | listings have a visual representation in the UI.
+    |
+    */
+
+    'default_bank_image_url' => env('DEFAULT_BANK_IMAGE_URL', '/images/default-bank.png'),
+
 ];

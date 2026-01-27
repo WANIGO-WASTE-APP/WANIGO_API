@@ -233,7 +233,7 @@ class SetoranSampahController extends Controller
         $userId = Auth::id();
         $setoran = SetoranSampah::where('id', $id)
             ->where('user_id', $userId)
-            ->with(['bankSampah', 'detailSetoran.katalogSampah', 'setoranLog'])
+            ->with(['bankSampah', 'detailSetoran.itemSampah', 'setoranSampahLogs'])
             ->first();
 
         if (!$setoran) {
@@ -260,9 +260,9 @@ class SetoranSampahController extends Controller
             }
 
             // Kelompokkan berdasarkan sub kategori
-            $subKategoriId = $detail->katalogSampah->sub_kategori_sampah_id ?? 'none';
-            $subKategoriName = $detail->katalogSampah->subKategori ?
-                $detail->katalogSampah->subKategori->nama_sub_kategori : 'Lainnya';
+            $subKategoriId = $detail->itemSampah->sub_kategori_sampah_id ?? 'none';
+            $subKategoriName = $detail->itemSampah->subKategori ?
+                $detail->itemSampah->subKategori->nama_sub_kategori : 'Lainnya';
 
             if (!isset($detailBySubKategori[$subKategoriId])) {
                 $detailBySubKategori[$subKategoriId] = [
@@ -277,7 +277,7 @@ class SetoranSampahController extends Controller
 
         // Prepare timeline status
         $timeline = [];
-        foreach ($setoran->setoranLog as $log) {
+        foreach ($setoran->setoranSampahLogs as $log) {
             $timeline[] = [
                 'status_setoran' => $log->status_setoran,
                 'tanggal' => $log->created_at->format('d M Y'),
@@ -366,7 +366,7 @@ class SetoranSampahController extends Controller
     {
         $userId = Auth::id();
         $setoran = SetoranSampah::where('user_id', $userId)
-            ->whereIn('status_setoran', [self::STATUS_PENGAJUAN, self::STATUS_DIPROSES])
+            ->ongoing()
             ->with(['bankSampah', 'detailSetoran'])
             ->orderBy('tanggal_setoran', 'desc')
             ->paginate(10);

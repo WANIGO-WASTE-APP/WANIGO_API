@@ -74,7 +74,7 @@
           }
         },
         {
-          "name": "Login",
+          "name": "Login (Email/Password)",
           "request": {
             "method": "POST",
             "header": [
@@ -102,14 +102,81 @@
             "body": {
               "mode": "raw",
               "raw": "{\n    \"email\": \"{{test_email}}\",\n    \"password\": \"{{test_password}}\"\n}"
-            }
+            },
+            "description": "Login with email and password.\n\nResponse:\n{\n  \"success\": true,\n  \"data\": {\n    \"access_token\": \"1|abcdef...\",\n    \"token_type\": \"Bearer\",\n    \"user\": {...}\n  }\n}\n\nToken automatically saved to {{token}} variable."
           },
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "var jsonData = pm.response.json(); if (jsonData.data && jsonData.data.access_token) { pm.environment.set(\"token\", jsonData.data.access_token); }"
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Save token from either access_token or token field",
+                  "if (jsonData.success && jsonData.data) {",
+                  "    var token = jsonData.data.access_token || jsonData.data.token;",
+                  "    if (token) {",
+                  "        pm.environment.set(\"token\", token);",
+                  "        console.log(\"✅ Login successful! Token saved to environment.\");",
+                  "    }",
+                  "} else {",
+                  "    console.log(\"❌ Login failed: \" + (jsonData.message || \"Unknown error\"));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Firebase Google Sign-In (NEW)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/firebase/google",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "firebase",
+                "google"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id_token\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6IjE4MmU0M...\"\n}"
+            },
+            "description": "NEW: Authenticate with Firebase Google Sign-In.\n\nHow to get Firebase ID token:\n1. User signs in with Google via Firebase SDK in mobile app\n2. Firebase returns ID token\n3. Send that token to this endpoint\n\nResponse:\n{\n  \"success\": true,\n  \"message\": \"Login success\",\n  \"data\": {\n    \"token\": \"1|abcdef...\",\n    \"token_type\": \"Bearer\",\n    \"user\": {\n      \"id\": 1,\n      \"name\": \"John Doe\",\n      \"email\": \"john@example.com\",\n      \"avatar_url\": \"https://lh3.googleusercontent.com/...\"\n    }\n  }\n}\n\nBehavior:\n- New users: Creates account automatically\n- Existing users: Updates profile with Firebase data\n- Token automatically saved to {{token}} variable"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "// Save token from response",
+                  "if (jsonData.success && jsonData.data && jsonData.data.token) {",
+                  "    pm.environment.set(\"token\", jsonData.data.token);",
+                  "    console.log(\"✅ Firebase auth successful! Token saved to environment.\");",
+                  "    console.log(\"User: \" + jsonData.data.user.name + \" (\" + jsonData.data.user.email + \")\");",
+                  "} else {",
+                  "    console.log(\"❌ Firebase auth failed: \" + (jsonData.message || \"Unknown error\"));",
+                  "}"
                 ],
                 "type": "text/javascript"
               }
@@ -359,7 +426,7 @@
       "name": "2. Bank Sampah (Public)",
       "item": [
         {
-          "name": "Get All Bank Sampah",
+          "name": "Get All Bank Sampah (UPDATED)",
           "request": {
             "method": "GET",
             "header": [
@@ -391,38 +458,46 @@
                 },
                 {
                   "key": "lat",
-                  "value": "-7.2575"
+                  "value": "-7.2575",
+                  "disabled": true
                 },
                 {
                   "key": "lng",
-                  "value": "112.7521"
+                  "value": "112.7521",
+                  "disabled": true
                 },
                 {
                   "key": "radius_km",
-                  "value": "10"
+                  "value": "10",
+                  "disabled": true
                 },
                 {
                   "key": "kategori",
-                  "value": "kering"
+                  "value": "kering",
+                  "disabled": true
                 },
                 {
                   "key": "sort",
-                  "value": "distance"
+                  "value": "distance",
+                  "disabled": true
                 },
                 {
                   "key": "per_page",
-                  "value": "20"
+                  "value": "20",
+                  "disabled": true
                 },
                 {
                   "key": "page",
-                  "value": "1"
+                  "value": "1",
+                  "disabled": true
                 }
               ]
-            }
+            },
+            "description": "UPDATED: Response now includes:\n- contact_info object with normalized phone and email\n- @deprecated object with old fields (nomor_telepon, nomor_telepon_publik)\n- Warning header for deprecated fields\n- tonase_sampah EXCLUDED from list (performance optimization)\n\nNew Response Format:\n{\n  \"success\": true,\n  \"data\": [{\n    \"id\": 1,\n    \"nama_bank_sampah\": \"Bank Sampah Melati\",\n    \"contact_info\": {\n      \"phone\": \"081234567890\",\n      \"email\": \"melati@example.com\"\n    },\n    \"@deprecated\": {\n      \"nomor_telepon\": \"081234567890\",\n      \"nomor_telepon_publik\": \"081234567890\"\n    }\n  }]\n}\n\nResponse Headers:\nWarning: 299 - \"Deprecated fields (@deprecated) will be removed in v2.0\""
           }
         },
         {
-          "name": "Get Bank Sampah Detail",
+          "name": "Get Bank Sampah Detail (UPDATED)",
           "request": {
             "method": "GET",
             "header": [
@@ -453,7 +528,8 @@
                   "value": "1"
                 }
               ]
-            }
+            },
+            "description": "UPDATED: Detail endpoint includes:\n- contact_info object with normalized phone and email\n- @deprecated object with old fields\n- tonase_sampah INCLUDED (only in detail view)\n- Warning header for deprecated fields\n\nNew Response Format:\n{\n  \"success\": true,\n  \"data\": {\n    \"id\": 1,\n    \"nama_bank_sampah\": \"Bank Sampah Melati\",\n    \"contact_info\": {\n      \"phone\": \"081234567890\",\n      \"email\": \"melati@example.com\"\n    },\n    \"tonase_sampah\": 1250.50,\n    \"@deprecated\": {\n      \"nomor_telepon\": \"081234567890\",\n      \"nomor_telepon_publik\": \"081234567890\"\n    }\n  }\n}"
           }
         }
       ]
@@ -577,6 +653,42 @@
               "mode": "raw",
               "raw": "{\n    \"latitude\": -7.2575,\n    \"longitude\": 112.7521,\n    \"radius\": 10,\n    \"kategori_sampah\": 0\n}"
             }
+          }
+        },
+        {
+          "name": "Get Registered Bank Sampah (UPDATED)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/bank-sampah/registered",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "bank-sampah",
+                "registered"
+              ]
+            },
+            "description": "UPDATED: Returns bank sampah where user is active member.\n\nNew Response Format includes:\n- contact_info object (normalized phone/email)\n- @deprecated object (old fields)\n- tonase_sampah EXCLUDED (list endpoint)\n- Warning header\n\nResponse:\n{\n  \"success\": true,\n  \"data\": [{\n    \"id\": 1,\n    \"nama_bank_sampah\": \"Bank Sampah Melati\",\n    \"contact_info\": {\n      \"phone\": \"081234567890\",\n      \"email\": \"melati@example.com\"\n    },\n    \"member_status\": \"aktif\",\n    \"@deprecated\": {\n      \"nomor_telepon\": \"081234567890\",\n      \"nomor_telepon_publik\": \"081234567890\"\n    }\n  }]\n}"
           }
         },
         {
@@ -1144,7 +1256,12 @@
                 "nasabah",
                 "penarikan-saldo"
               ]
-            }
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bank_sampah_id\": 1,\n    \"jumlah\": 50000,\n    \"metode_penarikan\": \"transfer\",\n    \"nomor_rekening\": \"1234567890\",\n    \"nama_bank\": \"BCA\",\n    \"atas_nama\": \"John Doe\"\n}"
+            },
+            "description": "Create new withdrawal request.\n\nRequired fields:\n- bank_sampah_id: Bank sampah ID\n- jumlah: Amount to withdraw (minimum based on bank policy)\n- metode_penarikan: transfer or tunai\n- nomor_rekening: Account number (if transfer)\n- nama_bank: Bank name (if transfer)\n- atas_nama: Account holder name"
           }
         },
         {
@@ -1230,8 +1347,9 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{}"
-            }
+              "raw": "{\n    \"catatan\": \"Penarikan disetujui\"\n}"
+            },
+            "description": "Approve withdrawal request (Bank staff only).\n\nOptional:\n- catatan: Notes for approval"
           }
         },
         {
@@ -1646,6 +1764,3997 @@
           }
         }
       ]
+    },
+    {
+      "name": "10. Setoran Sampah (NEW STATUS)",
+      "item": [
+        {
+          "name": "Get Ongoing Setoran (UPDATED)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/setoran-sampah/ongoing",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "setoran-sampah",
+                "ongoing"
+              ]
+            },
+            "description": "UPDATED: New status values!\n\nOld Status → New Status:\n- pending/requested → pengajuan\n- processing/in_progress → diproses\n- done/completed → selesai\n\nThis endpoint returns only ongoing setoran:\n- status_setoran IN ('pengajuan', 'diproses')\n- Excludes 'selesai' and 'dibatalkan'\n\nResponse Format:\n{\n  \"success\": true,\n  \"data\": {\n    \"data\": [{\n      \"id\": 123,\n      \"status_setoran\": \"pengajuan\",\n      \"kode_setoran_sampah\": \"STR001234\",\n      \"is_cancelable\": true\n    }]\n  }\n}"
+          }
+        },
+        {
+          "name": "Get Setoran History (UPDATED)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/setoran-sampah/history?status_setoran=selesai",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "setoran-sampah",
+                "history"
+              ],
+              "query": [
+                {
+                  "key": "status_setoran",
+                  "value": "selesai",
+                  "description": "Filter: selesai or dibatalkan"
+                },
+                {
+                  "key": "bank_sampah_id",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "UPDATED: New status values!\n\nReturns completed or cancelled setoran:\n- status_setoran: 'selesai' or 'dibatalkan'\n\nResponse Format:\n{\n  \"success\": true,\n  \"data\": {\n    \"data\": [{\n      \"id\": 120,\n      \"status_setoran\": \"selesai\",\n      \"total_berat\": 5.50,\n      \"total_saldo\": 27500.00\n    }]\n  }\n}"
+          }
+        },
+        {
+          "name": "Create Pengajuan Setoran",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/setoran-sampah/pengajuan",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "setoran-sampah",
+                "pengajuan"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bank_sampah_id\": 1,\n    \"tanggal_setoran\": \"2026-01-27\",\n    \"waktu_setoran\": \"10:00\",\n    \"item_ids\": [5, 12, 18],\n    \"catatan\": \"Sampah plastik dan kertas\"\n}"
+            },
+            "description": "Create new waste deposit submission.\n\nInitial status: 'pengajuan'\nWeight and balance will be filled by bank staff.\n\nResponse:\n{\n  \"success\": true,\n  \"message\": \"Pengajuan setoran sampah berhasil dibuat\",\n  \"data\": {\n    \"id\": 125,\n    \"status_setoran\": \"pengajuan\",\n    \"kode_setoran\": \"STR001235\"\n  }\n}"
+          }
+        },
+        {
+          "name": "Get Setoran Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/setoran-sampah/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "setoran-sampah",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "123"
+                }
+              ]
+            },
+            "description": "Get detailed information including:\n- Items grouped by sub-category\n- Status timeline\n- is_cancelable flag\n\nResponse includes status_setoran with new values:\n- pengajuan\n- diproses\n- selesai\n- dibatalkan"
+          }
+        },
+        {
+          "name": "Cancel Setoran",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/setoran-sampah/:id/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "setoran-sampah",
+                ":id",
+                "cancel"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "123"
+                }
+              ]
+            },
+            "description": "Cancel waste deposit submission.\n\nRequirements:\n- Status must be 'pengajuan'\n- Within 24 hours of creation\n\nChanges status to 'dibatalkan'"
+          }
+        },
+        {
+          "name": "Get Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/setoran-sampah/dashboard-stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "setoran-sampah",
+                "dashboard-stats"
+              ]
+            },
+            "description": "Get summary statistics with new status values:\n\nResponse:\n{\n  \"success\": true,\n  \"data\": {\n    \"jumlah_setoran\": {\n      \"pengajuan\": 2,\n      \"diproses\": 1,\n      \"selesai\": 15,\n      \"batal\": 1,\n      \"total\": 19\n    },\n    \"total_statistik\": {\n      \"total_berat\": 45.50,\n      \"total_saldo\": 227500.00\n    }\n  }\n}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Jadwal Sampah",
+      "item": [
+        {
+          "name": "Get All Jadwal Sampah",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah"
+              ]
+            },
+            "description": "Mendapatkan semua jadwal sampah nasabah"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"user_id\": 1,\n            \"bank_sampah_id\": 1,\n            \"tipe_jadwal_id\": 0,\n            \"frekuensi\": \"harian\",\n            \"waktu_mulai\": \"07:00:00\",\n            \"tanggal_mulai\": \"2025-04-25\",\n            \"status\": \"belum selesai\",\n            \"nomor_urut\": 1,\n            \"created_at\": \"2025-04-24T10:30:00.000000Z\",\n            \"updated_at\": \"2025-04-24T10:30:00.000000Z\",\n            \"bank_sampah\": {\n                \"id\": 1,\n                \"nama\": \"Bank Sampah Sejahtera\",\n                \"alamat\": \"Jl. Raya No. 123\",\n                \"tanggal_setoran\": \"2025-04-30\"\n            },\n            \"tipe_jadwal\": {\n                \"id\": 0,\n                \"nama\": \"Pemilahan Sampah\"\n            }\n        },\n        {\n            \"id\": 2,\n            \"user_id\": 1,\n            \"bank_sampah_id\": 1,\n            \"tipe_jadwal_id\": 1,\n            \"frekuensi\": null,\n            \"waktu_mulai\": \"09:00:00\",\n            \"tanggal_mulai\": \"2025-04-28\",\n            \"status\": \"belum selesai\",\n            \"nomor_urut\": 1,\n            \"created_at\": \"2025-04-24T10:45:00.000000Z\",\n            \"updated_at\": \"2025-04-24T10:45:00.000000Z\",\n            \"bank_sampah\": {\n                \"id\": 1,\n                \"nama\": \"Bank Sampah Sejahtera\",\n                \"alamat\": \"Jl. Raya No. 123\",\n                \"tanggal_setoran\": \"2025-04-30\"\n            },\n            \"tipe_jadwal\": {\n                \"id\": 1,\n                \"nama\": \"Rencana Setoran\"\n            }\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Check Bank Sampah Registration",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah/check-registration",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah",
+                "check-registration"
+              ]
+            },
+            "description": "Memeriksa status keanggotaan nasabah di bank sampah"
+          },
+          "response": [
+            {
+              "name": "Kondisi 1: Nasabah Belum Terdaftar",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/check-registration",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "check-registration"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"is_registered\": false,\n    \"message\": \"Anda belum terdaftar sebagai nasabah bank sampah.\",\n    \"condition\": 1\n}"
+            },
+            {
+              "name": "Kondisi 2: Nasabah Terdaftar Belum Ada Jadwal",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/check-registration",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "check-registration"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"is_registered\": true,\n    \"has_schedule\": false,\n    \"message\": \"Anda sudah terdaftar sebagai nasabah bank sampah, tetapi belum membuat jadwal.\",\n    \"bank_sampah\": {\n        \"id\": 1,\n        \"nama\": \"Bank Sampah Sejahtera\",\n        \"alamat\": \"Jl. Raya No. 123\",\n        \"tanggal_setoran\": \"2025-04-30\"\n    },\n    \"condition\": 2\n}"
+            },
+            {
+              "name": "Kondisi 3: Nasabah Terdaftar Sudah Ada Jadwal",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/check-registration",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "check-registration"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"is_registered\": true,\n    \"has_schedule\": true,\n    \"message\": \"Anda sudah terdaftar sebagai nasabah bank sampah dan sudah membuat jadwal.\",\n    \"bank_sampah\": {\n        \"id\": 1,\n        \"nama\": \"Bank Sampah Sejahtera\",\n        \"alamat\": \"Jl. Raya No. 123\",\n        \"tanggal_setoran\": \"2025-04-30\"\n    },\n    \"has_pemilahan_schedule\": true,\n    \"has_setoran_schedule\": true,\n    \"condition\": 3\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Calendar View",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bulan\": 4,\n    \"tahun\": 2025\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah/calendar-view",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah",
+                "calendar-view"
+              ]
+            },
+            "description": "Mendapatkan jadwal sampah untuk tampilan kalender"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bulan\": 4,\n    \"tahun\": 2025\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/calendar-view",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "calendar-view"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": {\n        \"2025-04-25\": [\n            {\n                \"id\": 1,\n                \"title\": \"Pemilahan Sampah #1\",\n                \"tipe_jadwal_id\": 0,\n                \"tipe_jadwal_nama\": \"Pemilahan Sampah\",\n                \"waktu\": \"07:00:00\",\n                \"status\": \"belum selesai\",\n                \"color\": \"blue\",\n                \"nomor_urut\": 1\n            }\n        ],\n        \"2025-04-28\": [\n            {\n                \"id\": 2,\n                \"title\": \"Rencana Setoran #1\",\n                \"tipe_jadwal_id\": 1,\n                \"tipe_jadwal_nama\": \"Rencana Setoran\",\n                \"waktu\": \"09:00:00\",\n                \"status\": \"belum selesai\",\n                \"color\": \"green\",\n                \"nomor_urut\": 1\n            }\n        ]\n    },\n    \"bulan\": 4,\n    \"tahun\": 2025\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bulan\": 13,\n    \"tahun\": 2025\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/calendar-view",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "calendar-view"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Bulan harus antara 1 dan 12.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Nasabah Bank Sampah List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah/bank-sampah-list",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah",
+                "bank-sampah-list"
+              ]
+            },
+            "description": "Mendapatkan daftar bank sampah yang terdaftar oleh nasabah"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/bank-sampah-list",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "bank-sampah-list"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"nama\": \"Bank Sampah Sejahtera\",\n            \"alamat\": \"Jl. Raya No. 123\",\n            \"tanggal_setoran\": \"2025-04-30\",\n            \"member_id\": 1,\n            \"tanggal_bergabung\": \"2025-04-15T08:30:00.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"nama\": \"Bank Sampah Bersih\",\n            \"alamat\": \"Jl. Merdeka No. 45\",\n            \"tanggal_setoran\": \"2025-04-25\",\n            \"member_id\": 2,\n            \"tanggal_bergabung\": \"2025-04-17T10:15:00.000000Z\"\n        }\n    ]\n}"
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/bank-sampah-list",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "bank-sampah-list"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Anda belum terdaftar di bank sampah manapun.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Jadwal By Tanggal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"tanggal\": \"2025-04-25\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah/by-tanggal",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah",
+                "by-tanggal"
+              ]
+            },
+            "description": "Mendapatkan jadwal sampah nasabah berdasarkan tanggal"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"tanggal\": \"2025-04-25\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/by-tanggal",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "by-tanggal"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"user_id\": 1,\n            \"bank_sampah_id\": 1,\n            \"tipe_jadwal_id\": 0,\n            \"frekuensi\": \"harian\",\n            \"waktu_mulai\": \"07:00:00\",\n            \"tanggal_mulai\": \"2025-04-25\",\n            \"status\": \"belum selesai\",\n            \"nomor_urut\": 1,\n            \"created_at\": \"2025-04-24T10:30:00.000000Z\",\n            \"updated_at\": \"2025-04-24T10:30:00.000000Z\",\n            \"bank_sampah\": {\n                \"id\": 1,\n                \"nama\": \"Bank Sampah Sejahtera\",\n                \"alamat\": \"Jl. Raya No. 123\",\n                \"tanggal_setoran\": \"2025-04-30\"\n            },\n            \"tipe_jadwal\": {\n                \"id\": 0,\n                \"nama\": \"Pemilahan Sampah\"\n            }\n        }\n    ]\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"tanggal\": \"25-04-2025\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/by-tanggal",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "by-tanggal"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Format tanggal tidak valid. Gunakan format YYYY-MM-DD.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Jadwal Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah",
+                "1"
+              ]
+            },
+            "description": "Mendapatkan detail jadwal sampah berdasarkan ID"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 1,\n        \"user_id\": 1,\n        \"bank_sampah_id\": 1,\n        \"tipe_jadwal_id\": 0,\n        \"frekuensi\": \"harian\",\n        \"waktu_mulai\": \"07:00:00\",\n        \"tanggal_mulai\": \"2025-04-25\",\n        \"status\": \"belum selesai\",\n        \"nomor_urut\": 1,\n        \"created_at\": \"2025-04-24T10:30:00.000000Z\",\n        \"updated_at\": \"2025-04-24T10:30:00.000000Z\",\n        \"bank_sampah\": {\n            \"id\": 1,\n            \"nama\": \"Bank Sampah Sejahtera\",\n            \"alamat\": \"Jl. Raya No. 123\",\n            \"tanggal_setoran\": \"2025-04-30\"\n        },\n        \"tipe_jadwal\": {\n            \"id\": 0,\n            \"nama\": \"Pemilahan Sampah\"\n        }\n    }\n}"
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/999",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "999"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Jadwal sampah tidak ditemukan\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Jadwal Pemilahan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"frekuensi\": \"harian\",\n    \"waktu_mulai\": \"07:00\",\n    \"tanggal_mulai\": \"2025-04-25\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah/pemilahan",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah",
+                "pemilahan"
+              ]
+            },
+            "description": "Membuat jadwal pemilahan sampah baru"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"frekuensi\": \"harian\",\n    \"waktu_mulai\": \"07:00\",\n    \"tanggal_mulai\": \"2025-04-25\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/pemilahan",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "pemilahan"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Jadwal pemilahan sampah berhasil dibuat\",\n    \"data\": {\n        \"id\": 1,\n        \"user_id\": 1,\n        \"bank_sampah_id\": 1,\n        \"tipe_jadwal_id\": 0,\n        \"frekuensi\": \"harian\",\n        \"waktu_mulai\": \"07:00:00\",\n        \"tanggal_mulai\": \"2025-04-25\",\n        \"status\": \"belum selesai\",\n        \"nomor_urut\": 1,\n        \"created_at\": \"2025-04-24T10:30:00.000000Z\",\n        \"updated_at\": \"2025-04-24T10:30:00.000000Z\"\n    }\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"frekuensi\": \"invalid\",\n    \"waktu_mulai\": \"07:00\",\n    \"tanggal_mulai\": \"2025-04-25\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/pemilahan",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "pemilahan"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Pilihan frekuensi tidak valid. Pilih harian, mingguan, atau bulanan.\"\n}"
+            },
+            {
+              "name": "Already Has Schedule",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"frekuensi\": \"harian\",\n    \"waktu_mulai\": \"07:00\",\n    \"tanggal_mulai\": \"2025-04-25\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/pemilahan",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "pemilahan"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Anda sudah memiliki jadwal pemilahan sampah.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Jadwal Setoran",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bank_sampah_id\": 1,\n    \"waktu_mulai\": \"09:00\",\n    \"tanggal_mulai\": \"2025-04-28\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah/setoran",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah",
+                "setoran"
+              ]
+            },
+            "description": "Membuat jadwal rencana setoran sampah baru"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bank_sampah_id\": 1,\n    \"waktu_mulai\": \"09:00\",\n    \"tanggal_mulai\": \"2025-04-28\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/setoran",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "setoran"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Jadwal rencana setoran sampah berhasil dibuat\",\n    \"data\": {\n        \"id\": 2,\n        \"user_id\": 1,\n        \"bank_sampah_id\": 1,\n        \"tipe_jadwal_id\": 1,\n        \"frekuensi\": null,\n        \"waktu_mulai\": \"09:00:00\",\n        \"tanggal_mulai\": \"2025-04-28\",\n        \"status\": \"belum selesai\",\n        \"nomor_urut\": 1,\n        \"created_at\": \"2025-04-24T10:45:00.000000Z\",\n        \"updated_at\": \"2025-04-24T10:45:00.000000Z\"\n    }\n}"
+            },
+            {
+              "name": "Invalid Date Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bank_sampah_id\": 1,\n    \"waktu_mulai\": \"09:00\",\n    \"tanggal_mulai\": \"2025-04-20\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/setoran",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "setoran"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Jadwal rencana setoran tidak boleh lebih dari 3 hari sebelum jadwal setoran bank sampah.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Mark Jadwal Completed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"jadwal_sampah_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah/mark-completed",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah",
+                "mark-completed"
+              ]
+            },
+            "description": "Menandai jadwal sampah sebagai selesai"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"jadwal_sampah_id\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/mark-completed",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "mark-completed"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Jadwal sampah berhasil ditandai selesai\",\n    \"data\": {\n        \"id\": 1,\n        \"user_id\": 1,\n        \"bank_sampah_id\": 1,\n        \"tipe_jadwal_id\": 0,\n        \"frekuensi\": \"harian\",\n        \"waktu_mulai\": \"07:00:00\",\n        \"tanggal_mulai\": \"2025-04-25\",\n        \"status\": \"selesai\",\n        \"nomor_urut\": 1,\n        \"created_at\": \"2025-04-24T10:30:00.000000Z\",\n        \"updated_at\": \"2025-04-24T11:00:00.000000Z\"\n    }\n}"
+            },
+            {
+              "name": "Already Completed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"jadwal_sampah_id\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/mark-completed",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "mark-completed"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Jadwal sampah sudah ditandai selesai sebelumnya\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Jadwal Sampah",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"waktu_mulai\": \"08:00\",\n    \"tanggal_mulai\": \"2025-04-26\",\n    \"frekuensi\": \"mingguan\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah",
+                "1"
+              ]
+            },
+            "description": "Mengupdate jadwal sampah yang sudah ada"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"waktu_mulai\": \"08:00\",\n    \"tanggal_mulai\": \"2025-04-26\",\n    \"frekuensi\": \"mingguan\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Jadwal sampah berhasil diupdate\",\n    \"data\": {\n        \"id\": 1,\n        \"user_id\": 1,\n        \"bank_sampah_id\": 1,\n        \"tipe_jadwal_id\": 0,\n        \"frekuensi\": \"mingguan\",\n        \"waktu_mulai\": \"08:00:00\",\n        \"tanggal_mulai\": \"2025-04-26\",\n        \"status\": \"belum selesai\",\n        \"nomor_urut\": 1,\n        \"created_at\": \"2025-04-24T10:30:00.000000Z\",\n        \"updated_at\": \"2025-04-24T12:00:00.000000Z\"\n    }\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"waktu_mulai\": \"invalid\",\n    \"tanggal_mulai\": \"2025-04-26\",\n    \"frekuensi\": \"mingguan\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "1"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Format waktu tidak valid. Gunakan format H:i.\"\n}"
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"waktu_mulai\": \"08:00\",\n    \"tanggal_mulai\": \"2025-04-26\",\n    \"frekuensi\": \"mingguan\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/999",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "999"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Jadwal sampah tidak ditemukan\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Jadwal Sampah",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah",
+                "1"
+              ]
+            },
+            "description": "Menghapus jadwal sampah"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Jadwal sampah berhasil dihapus\"\n}"
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/999",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "999"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Jadwal sampah tidak ditemukan\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Validate Setoran Date",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bank_sampah_id\": 1,\n    \"tanggal_mulai\": \"2025-04-28\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/jadwal-sampah/validate-setoran-date",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "jadwal-sampah",
+                "validate-setoran-date"
+              ]
+            },
+            "description": "Validasi tanggal rencana setoran"
+          },
+          "response": [
+            {
+              "name": "Valid Date",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bank_sampah_id\": 1,\n    \"tanggal_mulai\": \"2025-04-28\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/validate-setoran-date",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "validate-setoran-date"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"is_valid\": true,\n    \"message\": \"Tanggal valid\"\n}"
+            },
+            {
+              "name": "Invalid Date",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bank_sampah_id\": 1,\n    \"tanggal_mulai\": \"2025-04-20\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/jadwal-sampah/validate-setoran-date",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jadwal-sampah",
+                    "validate-setoran-date"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"is_valid\": false,\n    \"message\": \"Tanggal tidak valid, harus maksimal 3 hari sebelum tanggal setoran bank sampah\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Endpoints for managing waste collection schedules"
+    },
+    {
+      "name": "12. Bank Sampah Profile",
+      "item": [
+        {
+          "name": "1. Daftar Bank Sampah",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/nasabah/member-bank-sampah",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "nasabah",
+                "member-bank-sampah"
+              ]
+            },
+            "description": "Mendapatkan daftar bank sampah yang terdaftar oleh pengguna"
+          },
+          "response": [
+            {
+              "name": "Sudah Terdaftar di Bank Sampah",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/member-bank-sampah",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "member-bank-sampah"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Daftar bank sampah berhasil diambil\",\n    \"data\": {\n        \"is_registered\": true,\n        \"bank_sampah\": [\n            {\n                \"id\": 1,\n                \"nama_bank_sampah\": \"Bank Sampah Kawan Surabaya\",\n                \"alamat_bank_sampah\": \"Jl. Rayan ITS No.20 Mulyorejo, Kec. Gebang, Surabaya\",\n                \"deskripsi\": \"Bank sampah sejak 2010 yang menerima berbagai jenis sampah kering\",\n                \"latitude\": -7.2574719,\n                \"longitude\": 112.7520883,\n                \"foto_usaha_url\": \"http://127.0.0.1:8000/storage/bank-sampah/foto_usaha_1.jpg\",\n                \"kode_nasabah\": \"BSS2504KLM\",\n                \"tanggal_bergabung\": \"2023-10-15\",\n                \"status_operasional\": \"Aktif\",\n                \"status_keanggotaan\": \"aktif\",\n                \"jam_operasional\": [\n                    {\n                        \"id\": 1,\n                        \"bank_sampah_id\": 1,\n                        \"day_of_week\": 1,\n                        \"open_time\": \"10:00\",\n                        \"close_time\": \"22:00\",\n                        \"created_at\": \"2023-04-23T10:30:00.000000Z\",\n                        \"updated_at\": \"2023-04-23T10:30:00.000000Z\"\n                    },\n                    {\n                        \"id\": 2,\n                        \"bank_sampah_id\": 1,\n                        \"day_of_week\": 2,\n                        \"open_time\": \"10:00\",\n                        \"close_time\": \"22:00\",\n                        \"created_at\": \"2023-04-23T10:30:00.000000Z\",\n                        \"updated_at\": \"2023-04-23T10:30:00.000000Z\"\n                    }\n                ]\n            },\n            {\n                \"id\": 2,\n                \"nama_bank_sampah\": \"Bank Sampah Hijau Jakarta\",\n                \"alamat_bank_sampah\": \"Jl. Gatot Subroto No.15, Jakarta Selatan\",\n                \"deskripsi\": \"Bank sampah yang fokus pada daur ulang sampah plastik\",\n                \"latitude\": -6.2345678,\n                \"longitude\": 106.8765432,\n                \"foto_usaha_url\": \"http://127.0.0.1:8000/storage/bank-sampah/foto_usaha_2.jpg\",\n                \"kode_nasabah\": \"BSH2504GHJ\",\n                \"tanggal_bergabung\": \"2023-11-05\",\n                \"status_operasional\": \"Tutup\",\n                \"status_keanggotaan\": \"aktif\",\n                \"jam_operasional\": [\n                    {\n                        \"id\": 3,\n                        \"bank_sampah_id\": 2,\n                        \"day_of_week\": 1,\n                        \"open_time\": \"08:00\",\n                        \"close_time\": \"16:00\",\n                        \"created_at\": \"2023-04-23T10:30:00.000000Z\",\n                        \"updated_at\": \"2023-04-23T10:30:00.000000Z\"\n                    },\n                    {\n                        \"id\": 4,\n                        \"bank_sampah_id\": 2,\n                        \"day_of_week\": 2,\n                        \"open_time\": \"08:00\",\n                        \"close_time\": \"16:00\",\n                        \"created_at\": \"2023-04-23T10:30:00.000000Z\",\n                        \"updated_at\": \"2023-04-23T10:30:00.000000Z\"\n                    }\n                ]\n            }\n        ]\n    }\n}"
+            },
+            {
+              "name": "Belum Terdaftar di Bank Sampah",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/member-bank-sampah",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "member-bank-sampah"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Tidak terdaftar di bank sampah manapun\",\n    \"data\": {\n        \"is_registered\": false,\n        \"bank_sampah\": []\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "2. Detail Bank Sampah",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/nasabah/bank-sampah/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "nasabah",
+                "bank-sampah",
+                "1"
+              ]
+            },
+            "description": "Mendapatkan detail informasi bank sampah"
+          },
+          "response": [
+            {
+              "name": "Sudah Terdaftar di Bank Sampah Ini",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/bank-sampah/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "bank-sampah",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Detail bank sampah berhasil diambil\",\n    \"data\": {\n        \"bank_sampah\": {\n            \"id\": 1,\n            \"nama_bank_sampah\": \"Bank Sampah Kawan Surabaya\",\n            \"alamat_bank_sampah\": \"Jl. Rayan ITS No.20 Mulyorejo, Kec. Gebang, Surabaya\",\n            \"deskripsi\": \"Bank sampah sejak 2010 yang menerima berbagai jenis sampah kering\",\n            \"latitude\": -7.2574719,\n            \"longitude\": 112.7520883,\n            \"foto_usaha_url\": \"http://127.0.0.1:8000/storage/bank-sampah/foto_usaha_1.jpg\"\n        },\n        \"status_operasional\": \"Aktif\",\n        \"jumlah_nasabah\": 125,\n        \"kategori_sampah\": \"Kering & Basah\",\n        \"is_registered\": true,\n        \"kode_nasabah\": \"BSS2504KLM\",\n        \"tanggal_bergabung\": \"2023-10-15\",\n        \"jam_operasional\": [\n            {\n                \"id\": 1,\n                \"hari\": \"Senin\",\n                \"day_of_week\": 1,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Senin: 10:00 - 22:00\"\n            },\n            {\n                \"id\": 2,\n                \"hari\": \"Selasa\",\n                \"day_of_week\": 2,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Selasa: 10:00 - 22:00\"\n            },\n            {\n                \"id\": 3,\n                \"hari\": \"Rabu\",\n                \"day_of_week\": 3,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Rabu: 10:00 - 22:00\"\n            },\n            {\n                \"id\": 4,\n                \"hari\": \"Kamis\",\n                \"day_of_week\": 4,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Kamis: 10:00 - 22:00\"\n            },\n            {\n                \"id\": 5,\n                \"hari\": \"Jumat\",\n                \"day_of_week\": 5,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Jumat: 10:00 - 22:00\"\n            },\n            {\n                \"id\": 6,\n                \"hari\": \"Sabtu\",\n                \"day_of_week\": 6,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Sabtu: 10:00 - 22:00\"\n            }\n        ],\n        \"contact_info\": {\n            \"phone\": \"+6281329292747\",\n            \"email\": \"contact@banksampahkawan.com\"\n        },\n        \"jadwal_setoran\": {\n            \"tipe\": \"Setiap bulan\",\n            \"waktu\": \"Setiap tanggal 26\",\n            \"jam\": \"10:00 WIB\"\n        }\n    }\n}"
+            },
+            {
+              "name": "Belum Terdaftar di Bank Sampah Ini",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/bank-sampah/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "bank-sampah",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Detail bank sampah berhasil diambil\",\n    \"data\": {\n        \"bank_sampah\": {\n            \"id\": 1,\n            \"nama_bank_sampah\": \"Bank Sampah Kawan Surabaya\",\n            \"alamat_bank_sampah\": \"Jl. Rayan ITS No.20 Mulyorejo, Kec. Gebang, Surabaya\",\n            \"deskripsi\": \"Bank sampah sejak 2010 yang menerima berbagai jenis sampah kering\",\n            \"latitude\": -7.2574719,\n            \"longitude\": 112.7520883,\n            \"foto_usaha_url\": \"http://127.0.0.1:8000/storage/bank-sampah/foto_usaha_1.jpg\"\n        },\n        \"status_operasional\": \"Aktif\",\n        \"jumlah_nasabah\": 125,\n        \"kategori_sampah\": \"Kering & Basah\",\n        \"is_registered\": false,\n        \"kode_nasabah\": null,\n        \"tanggal_bergabung\": null,\n        \"jam_operasional\": [\n            {\n                \"id\": 1,\n                \"hari\": \"Senin\",\n                \"day_of_week\": 1,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Senin: 10:00 - 22:00\"\n            },\n            {\n                \"id\": 2,\n                \"hari\": \"Selasa\",\n                \"day_of_week\": 2,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Selasa: 10:00 - 22:00\"\n            },\n            {\n                \"id\": 3,\n                \"hari\": \"Rabu\",\n                \"day_of_week\": 3,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Rabu: 10:00 - 22:00\"\n            },\n            {\n                \"id\": 4,\n                \"hari\": \"Kamis\",\n                \"day_of_week\": 4,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Kamis: 10:00 - 22:00\"\n            },\n            {\n                \"id\": 5,\n                \"hari\": \"Jumat\",\n                \"day_of_week\": 5,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Jumat: 10:00 - 22:00\"\n            },\n            {\n                \"id\": 6,\n                \"hari\": \"Sabtu\",\n                \"day_of_week\": 6,\n                \"jam_buka\": \"10:00\",\n                \"jam_tutup\": \"22:00\",\n                \"format_tampilan\": \"Sabtu: 10:00 - 22:00\"\n            }\n        ],\n        \"contact_info\": {\n            \"phone\": \"+6281329292747\",\n            \"email\": \"contact@banksampahkawan.com\"\n        },\n        \"jadwal_setoran\": {\n            \"tipe\": \"Setiap bulan\",\n            \"waktu\": \"Setiap tanggal 26\",\n            \"jam\": \"10:00 WIB\"\n        }\n    }\n}"
+            },
+            {
+              "name": "Bank Sampah Tidak Ditemukan",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/bank-sampah/999",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "bank-sampah",
+                    "999"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"error\",\n    \"message\": \"Bank sampah tidak ditemukan\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "3. Katalog Sampah (Tab 2)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/nasabah/katalog-sampah/1?kategori_sampah=kering",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "nasabah",
+                "katalog-sampah",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "kategori_sampah",
+                  "value": "kering",
+                  "description": "Filter kategori: kering, basah (opsional)"
+                }
+              ]
+            },
+            "description": "Mendapatkan katalog sampah berdasarkan kategori"
+          },
+          "response": [
+            {
+              "name": "Katalog Sampah - Semua Kategori",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/katalog-sampah/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "katalog-sampah",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Katalog sampah berhasil diambil\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"nama_sampah\": \"Botol Plastik\",\n            \"kategori_sampah\": \"Kering\",\n            \"harga_per_kg\": 5000,\n            \"keterangan\": \"Botol plastik bekas minuman, bersih dan dicuci\",\n            \"status\": \"aktif\",\n            \"created_at\": \"2023-04-20 10:30:00\",\n            \"updated_at\": \"2023-04-20 10:30:00\"\n        },\n        {\n            \"id\": 2,\n            \"nama_sampah\": \"Kertas HVS\",\n            \"kategori_sampah\": \"Kering\",\n            \"harga_per_kg\": 3000,\n            \"keterangan\": \"Kertas HVS bekas, tidak kusut\",\n            \"status\": \"aktif\",\n            \"created_at\": \"2023-04-20 10:30:00\",\n            \"updated_at\": \"2023-04-20 10:30:00\"\n        },\n        {\n            \"id\": 3,\n            \"nama_sampah\": \"Kardus\",\n            \"kategori_sampah\": \"Kering\",\n            \"harga_per_kg\": 2500,\n            \"keterangan\": \"Kardus bekas dalam kondisi bersih\",\n            \"status\": \"aktif\",\n            \"created_at\": \"2023-04-20 10:30:00\",\n            \"updated_at\": \"2023-04-20 10:30:00\"\n        },\n        {\n            \"id\": 4,\n            \"nama_sampah\": \"Sisa Makanan\",\n            \"kategori_sampah\": \"Basah\",\n            \"harga_per_kg\": 1000,\n            \"keterangan\": \"Sisa makanan untuk kompos\",\n            \"status\": \"aktif\",\n            \"created_at\": \"2023-04-20 10:30:00\",\n            \"updated_at\": \"2023-04-20 10:30:00\"\n        },\n        {\n            \"id\": 5,\n            \"nama_sampah\": \"Sampah Daun\",\n            \"kategori_sampah\": \"Basah\",\n            \"harga_per_kg\": 800,\n            \"keterangan\": \"Daun-daun kering untuk kompos\",\n            \"status\": \"aktif\",\n            \"created_at\": \"2023-04-20 10:30:00\",\n            \"updated_at\": \"2023-04-20 10:30:00\"\n        }\n    ]\n}"
+            },
+            {
+              "name": "Katalog Sampah - Kering",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/katalog-sampah/1?kategori_sampah=kering",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "katalog-sampah",
+                    "1"
+                  ],
+                  "query": [
+                    {
+                      "key": "kategori_sampah",
+                      "value": "kering"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Katalog sampah berhasil diambil\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"nama_sampah\": \"Botol Plastik\",\n            \"kategori_sampah\": \"Kering\",\n            \"harga_per_kg\": 5000,\n            \"keterangan\": \"Botol plastik bekas minuman, bersih dan dicuci\",\n            \"status\": \"aktif\",\n            \"created_at\": \"2023-04-20 10:30:00\",\n            \"updated_at\": \"2023-04-20 10:30:00\"\n        },\n        {\n            \"id\": 2,\n            \"nama_sampah\": \"Kertas HVS\",\n            \"kategori_sampah\": \"Kering\",\n            \"harga_per_kg\": 3000,\n            \"keterangan\": \"Kertas HVS bekas, tidak kusut\",\n            \"status\": \"aktif\",\n            \"created_at\": \"2023-04-20 10:30:00\",\n            \"updated_at\": \"2023-04-20 10:30:00\"\n        },\n        {\n            \"id\": 3,\n            \"nama_sampah\": \"Kardus\",\n            \"kategori_sampah\": \"Kering\",\n            \"harga_per_kg\": 2500,\n            \"keterangan\": \"Kardus bekas dalam kondisi bersih\",\n            \"status\": \"aktif\",\n            \"created_at\": \"2023-04-20 10:30:00\",\n            \"updated_at\": \"2023-04-20 10:30:00\"\n        }\n    ]\n}"
+            },
+            {
+              "name": "Katalog Sampah - Basah",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/katalog-sampah/1?kategori_sampah=basah",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "katalog-sampah",
+                    "1"
+                  ],
+                  "query": [
+                    {
+                      "key": "kategori_sampah",
+                      "value": "basah"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Katalog sampah berhasil diambil\",\n    \"data\": [\n        {\n            \"id\": 4,\n            \"nama_sampah\": \"Sisa Makanan\",\n            \"kategori_sampah\": \"Basah\",\n            \"harga_per_kg\": 1000,\n            \"keterangan\": \"Sisa makanan untuk kompos\",\n            \"status\": \"aktif\",\n            \"created_at\": \"2023-04-20 10:30:00\",\n            \"updated_at\": \"2023-04-20 10:30:00\"\n        },\n        {\n            \"id\": 5,\n            \"nama_sampah\": \"Sampah Daun\",\n            \"kategori_sampah\": \"Basah\",\n            \"harga_per_kg\": 800,\n            \"keterangan\": \"Daun-daun kering untuk kompos\",\n            \"status\": \"aktif\",\n            \"created_at\": \"2023-04-20 10:30:00\",\n            \"updated_at\": \"2023-04-20 10:30:00\"\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "4. Jam Operasional",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/nasabah/jam-operasional/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "nasabah",
+                "jam-operasional",
+                "1"
+              ]
+            },
+            "description": "Mendapatkan jam operasional bank sampah"
+          },
+          "response": [
+            {
+              "name": "Jam Operasional",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/jam-operasional/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "jam-operasional",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Jam operasional berhasil diambil\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"hari\": \"Senin\",\n            \"day_of_week\": 1,\n            \"jam_buka\": \"10:00\",\n            \"jam_tutup\": \"22:00\",\n            \"format_tampilan\": \"Senin: 10:00 - 22:00\"\n        },\n        {\n            \"id\": 2,\n            \"hari\": \"Selasa\",\n            \"day_of_week\": 2,\n            \"jam_buka\": \"10:00\",\n            \"jam_tutup\": \"22:00\",\n            \"format_tampilan\": \"Selasa: 10:00 - 22:00\"\n        },\n        {\n            \"id\": 3,\n            \"hari\": \"Rabu\",\n            \"day_of_week\": 3,\n            \"jam_buka\": \"10:00\",\n            \"jam_tutup\": \"22:00\",\n            \"format_tampilan\": \"Rabu: 10:00 - 22:00\"\n        },\n        {\n            \"id\": 4,\n            \"hari\": \"Kamis\",\n            \"day_of_week\": 4,\n            \"jam_buka\": \"10:00\",\n            \"jam_tutup\": \"22:00\",\n            \"format_tampilan\": \"Kamis: 10:00 - 22:00\"\n        },\n        {\n            \"id\": 5,\n            \"hari\": \"Jumat\",\n            \"day_of_week\": 5,\n            \"jam_buka\": \"10:00\",\n            \"jam_tutup\": \"22:00\",\n            \"format_tampilan\": \"Jumat: 10:00 - 22:00\"\n        },\n        {\n            \"id\": 6,\n            \"hari\": \"Sabtu\",\n            \"day_of_week\": 6,\n            \"jam_buka\": \"10:00\",\n            \"jam_tutup\": \"22:00\",\n            \"format_tampilan\": \"Sabtu: 10:00 - 22:00\"\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "5. Lokasi Bank Sampah",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/nasabah/lokasi-bank/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "nasabah",
+                "lokasi-bank",
+                "1"
+              ]
+            },
+            "description": "Mendapatkan koordinat lokasi bank sampah untuk tampilan peta"
+          },
+          "response": [
+            {
+              "name": "Lokasi Bank Sampah",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/lokasi-bank/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "lokasi-bank",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Lokasi bank sampah berhasil diambil\",\n    \"data\": {\n        \"nama_bank_sampah\": \"Bank Sampah Kawan Surabaya\",\n        \"alamat_bank_sampah\": \"Jl. Rayan ITS No.20 Mulyorejo, Kec. Gebang, Surabaya\",\n        \"latitude\": -7.2574719,\n        \"longitude\": 112.7520883\n    }\n}"
+            },
+            {
+              "name": "Lokasi Bank Sampah Tidak Tersedia",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/lokasi-bank/3",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "lokasi-bank",
+                    "3"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"error\",\n    \"message\": \"Koordinat lokasi bank sampah tidak tersedia\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "6. Kontak Bank Sampah",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/nasabah/kontak-bank/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "nasabah",
+                "kontak-bank",
+                "1"
+              ]
+            },
+            "description": "Mendapatkan informasi kontak bank sampah"
+          },
+          "response": [
+            {
+              "name": "Kontak Bank Sampah",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/kontak-bank/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "kontak-bank",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Data kontak bank sampah berhasil diambil\",\n    \"data\": {\n        \"nama_bank_sampah\": \"Bank Sampah Kawan Surabaya\",\n        \"no_telp_publik\": \"+6281329292747\",\n        \"email\": \"contact@banksampahkawan.com\",\n        \"website\": \"https://banksampahkawan.com\",\n        \"social_media\": {\n            \"instagram\": \"banksampahkawan\",\n            \"facebook\": \"banksampahkawan\",\n            \"twitter\": \"banksampahkawan\"\n        }\n    }\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Endpoints for viewing bank sampah profiles"
+    },
+    {
+      "name": "13. Bank Sampah Membership",
+      "item": [
+        {
+          "name": "7. Cek Status Keanggotaan",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/nasabah/check-nasabah/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "nasabah",
+                "check-nasabah",
+                "1"
+              ]
+            },
+            "description": "Mengecek status keanggotaan pengguna di bank sampah tertentu"
+          },
+          "response": [
+            {
+              "name": "Sudah Terdaftar",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/check-nasabah/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "check-nasabah",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Sudah terdaftar di bank sampah ini\",\n    \"data\": {\n        \"is_registered\": true,\n        \"kode_nasabah\": \"BSS2504KLM\",\n        \"status\": \"aktif\",\n        \"tanggal_bergabung\": \"2023-10-15\"\n    }\n}"
+            },
+            {
+              "name": "Belum Terdaftar",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/check-nasabah/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "check-nasabah",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Belum terdaftar di bank sampah ini\",\n    \"data\": {\n        \"is_registered\": false\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "8. Gabung Jadi Nasabah",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bank_sampah_id\": 1\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/nasabah/register-member",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "nasabah",
+                "register-member"
+              ]
+            },
+            "description": "Mendaftarkan pengguna ke bank sampah"
+          },
+          "response": [
+            {
+              "name": "Berhasil Mendaftar",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bank_sampah_id\": 1\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/register-member",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "register-member"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Berhasil mendaftar sebagai nasabah bank sampah\",\n    \"data\": {\n        \"member\": {\n            \"id\": 5,\n            \"user_id\": 1,\n            \"bank_sampah_id\": 1,\n            \"kode_nasabah\": \"BSS2504KLM\",\n            \"status\": \"aktif\",\n            \"created_at\": \"2023-04-25T10:30:00.000000Z\",\n            \"updated_at\": \"2023-04-25T10:30:00.000000Z\"\n        },\n        \"kode_nasabah\": \"BSS2504KLM\",\n        \"bank_sampah\": {\n            \"id\": 1,\n            \"nama_bank_sampah\": \"Bank Sampah Kawan Surabaya\",\n            \"alamat_bank_sampah\": \"Jl. Rayan ITS No.20 Mulyorejo, Kec. Gebang, Surabaya\",\n            \"deskripsi\": \"Bank sampah sejak 2010 yang menerima berbagai jenis sampah kering\",\n            \"latitude\": -7.2574719,\n            \"longitude\": 112.7520883,\n            \"foto_usaha_url\": \"http://127.0.0.1:8000/storage/bank-sampah/foto_usaha_1.jpg\",\n            \"jumlah_nasabah\": 126\n        }\n    }\n}"
+            },
+            {
+              "name": "Sudah Terdaftar",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bank_sampah_id\": 1\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/register-member",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "register-member"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"error\",\n    \"message\": \"Anda sudah terdaftar di bank sampah ini\",\n    \"data\": {\n        \"kode_nasabah\": \"BSS2504KLM\"\n    }\n}"
+            },
+            {
+              "name": "Validasi Gagal",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bank_sampah_id\": 999\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/register-member",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "register-member"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"error\",\n    \"message\": \"Validasi gagal\",\n    \"errors\": {\n        \"bank_sampah_id\": [\n            \"The selected bank sampah id is invalid.\"\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "9. Berhenti Jadi Nasabah",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/nasabah/remove-member/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "nasabah",
+                "remove-member",
+                "1"
+              ]
+            },
+            "description": "Menghapus keanggotaan pengguna dari bank sampah"
+          },
+          "response": [
+            {
+              "name": "Berhasil Berhenti",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/remove-member/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "remove-member",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"success\",\n    \"message\": \"Berhasil berhenti sebagai nasabah bank sampah\"\n}"
+            },
+            {
+              "name": "Ada Setoran Aktif",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/remove-member/1",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "remove-member",
+                    "1"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"error\",\n    \"message\": \"Tidak dapat berhenti sebagai nasabah karena masih memiliki setoran aktif\"\n}"
+            },
+            {
+              "name": "Tidak Terdaftar",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/nasabah/remove-member/3",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "remove-member",
+                    "3"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"status\": \"error\",\n    \"message\": \"Anda tidak terdaftar di bank sampah ini\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Endpoints for managing bank sampah membership"
+    },
+    {
+      "name": "14. Detail Setoran",
+      "item": [
+        {
+          "name": "Get Detail By Setoran",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"setoran_sampah_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/detail-setoran/by-setoran",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "detail-setoran",
+                "by-setoran"
+              ]
+            },
+            "description": "Mendapatkan daftar item setoran berdasarkan ID setoran"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"setoran_sampah_id\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran/by-setoran",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran",
+                    "by-setoran"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n\"success\": true,\n    \"data\": {\n        \"detail_setoran\": [\n            {\n                \"id\": 1,\n                \"setoran_sampah_id\": 1,\n                \"katalog_sampah_id\": 1,\n                \"berat\": 0,\n                \"harga_per_kg\": 2500,\n                \"nilai\": 0,\n                \"created_at\": \"2025-04-28T10:00:00.000000Z\",\n                \"updated_at\": \"2025-04-28T10:00:00.000000Z\",\n                \"harga_format\": \"Rp 2.500\",\n                \"nilai_format\": \"Rp 0\",\n                \"berat_format\": \"0,00 kg\",\n                \"kategori_utama\": \"Sampah Kering\",\n                \"sub_kategori\": \"Kertas\",\n                \"katalogSampah\": {\n                    \"id\": 1,\n                    \"\"nama_item_sampah\": \"Kertas HVS\",\n                    \"sub_kategori_sampah_id\": 1,\n                    \"harga_per_kg\": 2500\n                }\n            },\n            {\n                \"id\": 2,\n                \"setoran_sampah_id\": 1,\n                \"katalog_sampah_id\": 3,\n                \"berat\": 0,\n                \"harga_per_kg\": 2000,\n                \"nilai\": 0,\n                \"created_at\": \"2025-04-28T10:00:00.000000Z\",\n                \"updated_at\": \"2025-04-28T10:00:00.000000Z\",\n                \"harga_format\": \"Rp 2.000\",\n                \"nilai_format\": \"Rp 0\",\n                \"berat_format\": \"0,00 kg\",\n                \"kategori_utama\": \"Sampah Kering\",\n                \"sub_kategori\": \"Kertas\",\n                \"katalogSampah\": {\n                    \"id\": 3,\n                    \"nama_item_sampah\": \"Koran Bekas\",\n                    \"sub_kategori_sampah_id\": 1,\n                    \"harga_per_kg\": 2000\n                }\n            }\n        ],\n        \"detail_by_sub_kategori\": [\n            {\n                \"id\": 1,\n                \"nama\": \"Kertas\",\n                \"warna\": \"#2196F3\",\n                \"items\": [\n                    {\n                        \"id\": 1,\n                        \"setoran_sampah_id\": 1,\n                        \"katalog_sampah_id\": 1,\n                        \"berat\": 0,\n                        \"harga_per_kg\": 2500,\n                        \"nilai\": 0,\n                        \"created_at\": \"2025-04-28T10:00:00.000000Z\",\n                        \"updated_at\": \"2025-04-28T10:00:00.000000Z\",\n                        \"harga_format\": \"Rp 2.500\",\n                        \"nilai_format\": \"Rp 0\",\n                        \"berat_format\": \"0,00 kg\",\n                        \"kategori_utama\": \"Sampah Kering\",\n                        \"sub_kategori\": \"Kertas\",\n                        \"katalogSampah\": {\n                            \"id\": 1,\n                            \"nama_item_sampah\": \"Kertas HVS\",\n                            \"sub_kategori_sampah_id\": 1,\n                            \"harga_per_kg\": 2500\n                        }\n                    },\n                    {\n                        \"id\": 2,\n                        \"setoran_sampah_id\": 1,\n                        \"katalog_sampah_id\": 3,\n                        \"berat\": 0,\n                        \"harga_per_kg\": 2000,\n                        \"nilai\": 0,\n                        \"created_at\": \"2025-04-28T10:00:00.000000Z\",\n                        \"updated_at\": \"2025-04-28T10:00:00.000000Z\",\n                        \"harga_format\": \"Rp 2.000\",\n                        \"nilai_format\": \"Rp 0\",\n                        \"berat_format\": \"0,00 kg\",\n                        \"kategori_utama\": \"Sampah Kering\",\n                        \"sub_kategori\": \"Kertas\",\n                        \"katalogSampah\": {\n                            \"id\": 3,\n                            \"nama_item_sampah\": \"Koran Bekas\",\n                            \"sub_kategori_sampah_id\": 1,\n                            \"harga_per_kg\": 2000\n                        }\n                    }\n                ]\n            }\n        ],\n        \"setoran\": {\n            \"id\": 1,\n            \"kode_setoran\": \"KWNA000001\",\n            \"status\": \"pengajuan\",\n            \"tanggal_setoran\": \"2025-05-31\",\n            \"waktu_setoran\": \"10:00\",\n            \"total_berat\": 0,\n            \"total_berat_format\": \"0,00 kg\",\n            \"total_nilai\": 0,\n            \"total_nilai_format\": \"Rp 0\",\n            \"editable\": true\n        }\n    }\n}"
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"setoran_sampah_id\": 999\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran/by-setoran",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran",
+                    "by-setoran"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Setoran tidak ditemukan atau Anda tidak memiliki akses\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Add Detail Setoran",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"setoran_sampah_id\": 1,\n    \"katalog_sampah_id\": 2,\n    \"berat\": 2.5\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/detail-setoran",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "detail-setoran"
+              ]
+            },
+            "description": "Menambahkan item baru ke setoran"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"setoran_sampah_id\": 1,\n    \"katalog_sampah_id\": 2,\n    \"berat\": 2.5\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Item berhasil ditambahkan ke setoran\",\n    \"data\": {\n        \"detail_setoran\": {\n            \"id\": 3,\n            \"setoran_sampah_id\": 1,\n            \"katalog_sampah_id\": 2,\n            \"berat\": 2.5,\n            \"harga_per_kg\": 3000,\n            \"nilai\": 7500,\n            \"created_at\": \"2025-04-28T10:10:00.000000Z\",\n            \"updated_at\": \"2025-04-28T10:10:00.000000Z\",\n            \"katalogSampah\": {\n                \"id\": 2,\n                \"nama_item_sampah\": \"Botol Plastik PET\",\n                \"kategori_sampah\": 0,\n                \"harga_per_kg\": 3000\n            }\n        },\n        \"total_berat\": 2.5,\n        \"total_berat_format\": \"2,50 kg\",\n        \"total_nilai\": 7500,\n        \"total_nilai_format\": \"Rp 7.500\"\n    }\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"setoran_sampah_id\": 1,\n    \"katalog_sampah_id\": 2,\n    \"berat\": -1\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Berat harus bernilai minimal 0.01\"\n}"
+            },
+            {
+              "name": "Item Already Added",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"setoran_sampah_id\": 1,\n    \"katalog_sampah_id\": 1,\n    \"berat\": 1.5\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Item ini sudah ditambahkan ke setoran ini\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Detail Setoran",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"berat\": 3.0\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/detail-setoran/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "detail-setoran",
+                "1"
+              ]
+            },
+            "description": "Mengupdate berat item setoran"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"berat\": 3.0\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran/1",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Detail setoran berhasil diupdate\",\n    \"data\": {\n        \"detail_setoran\": {\n            \"id\": 1,\n            \"setoran_sampah_id\": 1,\n            \"katalog_sampah_id\": 1,\n            \"berat\": 3,\n            \"harga_per_kg\": 2500,\n            \"nilai\": 7500,\n            \"created_at\": \"2025-04-28T10:00:00.000000Z\",\n            \"updated_at\": \"2025-04-28T10:15:00.000000Z\",\n            \"katalogSampah\": {\n                \"id\": 1,\n                \"nama_item_sampah\": \"Kertas HVS\",\n                \"kategori_sampah\": 0,\n                \"harga_per_kg\": 2500\n            }\n        },\n        \"total_berat\": 5.5,\n        \"total_berat_format\": \"5,50 kg\",\n        \"total_nilai\": 15000,\n        \"total_nilai_format\": \"Rp 15.000\"\n    }\n}"
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"berat\": 3.0\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran/999",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran",
+                    "999"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Detail setoran tidak ditemukan\"\n}"
+            },
+            {
+              "name": "Wrong Status",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"berat\": 3.0\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran/10",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran",
+                    "10"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Hanya setoran dengan status pengajuan yang dapat dimodifikasi\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Detail Setoran",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/detail-setoran/3",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "detail-setoran",
+                "3"
+              ]
+            },
+            "description": "Menghapus item dari setoran"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran/3",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran",
+                    "3"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Item berhasil dihapus dari setoran\",\n    \"data\": {\n        \"total_berat\": 3,\n        \"total_berat_format\": \"3,00 kg\",\n        \"total_nilai\": 7500,\n        \"total_nilai_format\": \"Rp 7.500\"\n    }\n}"
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran/999",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran",
+                    "999"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Detail setoran tidak ditemukan\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Item Detail",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/detail-setoran/1/detail",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "detail-setoran",
+                "1",
+                "detail"
+              ]
+            },
+            "description": "Mendapatkan detail item setoran"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran/1/detail",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran",
+                    "1",
+                    "detail"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": {\n        \"detail_setoran\": {\n            \"id\": 1,\n            \"setoran_sampah_id\": 1,\n            \"katalog_sampah_id\": 1,\n            \"berat\": 3,\n            \"harga_per_kg\": 2500,\n            \"nilai\": 7500,\n            \"created_at\": \"2025-04-28T10:00:00.000000Z\",\n            \"updated_at\": \"2025-04-28T10:15:00.000000Z\",\n            \"harga_format\": \"Rp 2.500\",\n            \"nilai_format\": \"Rp 7.500\",\n            \"berat_format\": \"3,00 kg\"\n        },\n        \"item_sampah\": {\n            \"id\": 1,\n            \"nama\": \"Kertas HVS\",\n            \"kategori_utama\": \"Sampah Kering\",\n            \"sub_kategori\": \"Kertas\",\n            \"deskripsi\": \"Kertas HVS putih tanpa noda\",\n            \"cara_pemilahan\": \"Pisahkan dari kertas berwarna\",\n            \"cara_pengemasan\": \"Ikat dengan tali\",\n            \"gambar_url\": \"https://example.com/storage/katalog_sampah/kertas_hvs.jpg\"\n        }\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Bulk Update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"setoran_sampah_id\": 1,\n    \"items\": [\n        {\n            \"id\": 1,\n            \"berat\": 2.5\n        },\n        {\n            \"id\": 2,\n            \"berat\": 1.8\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/nasabah/detail-setoran/bulk-update",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "nasabah",
+                "detail-setoran",
+                "bulk-update"
+              ]
+            },
+            "description": "Update beberapa item setoran sekaligus"
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"setoran_sampah_id\": 1,\n    \"items\": [\n        {\n            \"id\": 1,\n            \"berat\": 2.5\n        },\n        {\n            \"id\": 2,\n            \"berat\": 1.8\n        }\n    ]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran/bulk-update",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran",
+                    "bulk-update"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Item setoran berhasil diupdate\",\n    \"data\": {\n        \"updated_items\": [\n            {\n                \"id\": 1,\n                \"setoran_sampah_id\": 1,\n                \"katalog_sampah_id\": 1,\n                \"berat\": 2.5,\n                \"harga_per_kg\": 2500,\n                \"nilai\": 6250,\n                \"created_at\": \"2025-04-28T10:00:00.000000Z\",\n                \"updated_at\": \"2025-04-28T10:20:00.000000Z\"\n            },\n            {\n                \"id\": 2,\n                \"setoran_sampah_id\": 1,\n                \"katalog_sampah_id\": 3,\n                \"berat\": 1.8,\n                \"harga_per_kg\": 2000,\n                \"nilai\": 3600,\n                \"created_at\": \"2025-04-28T10:00:00.000000Z\",\n                \"updated_at\": \"2025-04-28T10:20:00.000000Z\"\n            }\n        ],\n        \"total_berat\": 4.3,\n        \"total_berat_format\": \"4,30 kg\",\n        \"total_nilai\": 9850,\n        \"total_nilai_format\": \"Rp 9.850\"\n    }\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"setoran_sampah_id\": 1,\n    \"items\": [\n        {\n            \"id\": 1,\n            \"berat\": -1\n        },\n        {\n            \"id\": 2,\n            \"berat\": 1.8\n        }\n    ]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran/bulk-update",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran",
+                    "bulk-update"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Berat harus bernilai minimal 0.01\"\n}"
+            },
+            {
+              "name": "Wrong Status",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"setoran_sampah_id\": 2,\n    \"items\": [\n        {\n            \"id\": 5,\n            \"berat\": 2.5\n        },\n        {\n            \"id\": 6,\n            \"berat\": 1.8\n        }\n    ]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/nasabah/detail-setoran/bulk-update",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "nasabah",
+                    "detail-setoran",
+                    "bulk-update"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "cookie": [],
+              "body": "{\n    \"success\": false,\n    \"message\": \"Hanya setoran dengan status pengajuan yang dapat dimodifikasi\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Endpoints for viewing setoran details"
     }
   ],
   "variable": [
@@ -1657,6 +5766,21 @@
     {
       "key": "token",
       "value": "",
+      "type": "string"
+    },
+    {
+      "key": "test_email",
+      "value": "test@example.com",
+      "type": "string"
+    },
+    {
+      "key": "test_password",
+      "value": "password123",
+      "type": "string"
+    },
+    {
+      "key": "test_phone",
+      "value": "081234567890",
       "type": "string"
     }
   ]
