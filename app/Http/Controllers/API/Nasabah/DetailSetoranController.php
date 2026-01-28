@@ -60,7 +60,7 @@ class DetailSetoranController extends Controller
         }
 
         // Cek apakah setoran masih dalam status pengajuan
-        if ($setoran->status !== self::STATUS_PENGAJUAN) {
+        if ($setoran->status_setoran !== self::STATUS_PENGAJUAN) {
             return response()->json([
                 'success' => false,
                 'message' => 'Hanya setoran dengan status pengajuan yang dapat dimodifikasi'
@@ -98,8 +98,7 @@ class DetailSetoranController extends Controller
             $detailSetoran->setoran_sampah_id = $setoranId;
             $detailSetoran->item_sampah_id = $itemSampahId;
             $detailSetoran->berat = $request->berat ?? 0; // Bisa 0 jika hanya pengajuan
-            $detailSetoran->harga_per_kg = $katalogSampah->harga_per_kg;
-            $detailSetoran->nilai = ($request->berat ?? 0) * $katalogSampah->harga_per_kg;
+            $detailSetoran->saldo = ($request->berat ?? 0) * $katalogSampah->harga_per_kg;
 
             // Proses foto jika ada
             if ($request->hasFile('foto')) {
@@ -111,10 +110,10 @@ class DetailSetoranController extends Controller
 
             // Update total berat dan nilai setoran
             $totalBerat = DetailSetoran::where('setoran_sampah_id', $setoranId)->sum('berat');
-            $totalNilai = DetailSetoran::where('setoran_sampah_id', $setoranId)->sum('nilai');
+            $totalNilai = DetailSetoran::where('setoran_sampah_id', $setoranId)->sum('saldo');
 
             $setoran->total_berat = $totalBerat;
-            $setoran->total_nilai = $totalNilai;
+            $setoran->total_saldo = $totalNilai;
             $setoran->save();
 
             DB::commit();
@@ -187,7 +186,7 @@ class DetailSetoranController extends Controller
         }
 
         // Cek apakah setoran masih dalam status pengajuan
-        if ($setoran->status !== self::STATUS_PENGAJUAN) {
+        if ($setoran->status_setoran !== self::STATUS_PENGAJUAN) {
             return response()->json([
                 'success' => false,
                 'message' => 'Hanya setoran dengan status pengajuan yang dapat dimodifikasi'
@@ -199,7 +198,10 @@ class DetailSetoranController extends Controller
             // Update detail setoran
             $oldBerat = $detailSetoran->berat;
             $detailSetoran->berat = $request->berat;
-            $detailSetoran->nilai = $request->berat * $detailSetoran->harga_per_kg;
+            
+            // Calculate saldo based on katalog sampah price
+            $katalogSampah = KatalogSampah::find($detailSetoran->item_sampah_id);
+            $detailSetoran->saldo = $request->berat * $katalogSampah->harga_per_kg;
 
             // Proses foto jika ada
             if ($request->hasFile('foto')) {
@@ -216,10 +218,10 @@ class DetailSetoranController extends Controller
 
             // Update total berat dan nilai setoran
             $totalBerat = DetailSetoran::where('setoran_sampah_id', $setoran->id)->sum('berat');
-            $totalNilai = DetailSetoran::where('setoran_sampah_id', $setoran->id)->sum('nilai');
+            $totalNilai = DetailSetoran::where('setoran_sampah_id', $setoran->id)->sum('saldo');
 
             $setoran->total_berat = $totalBerat;
-            $setoran->total_nilai = $totalNilai;
+            $setoran->total_saldo = $totalNilai;
             $setoran->save();
 
             DB::commit();
@@ -279,7 +281,7 @@ class DetailSetoranController extends Controller
         }
 
         // Cek apakah setoran masih dalam status pengajuan
-        if ($setoran->status !== self::STATUS_PENGAJUAN) {
+        if ($setoran->status_setoran !== self::STATUS_PENGAJUAN) {
             return response()->json([
                 'success' => false,
                 'message' => 'Hanya setoran dengan status pengajuan yang dapat dimodifikasi'
@@ -298,10 +300,10 @@ class DetailSetoranController extends Controller
 
             // Update total berat dan nilai setoran
             $totalBerat = DetailSetoran::where('setoran_sampah_id', $setoran->id)->sum('berat');
-            $totalNilai = DetailSetoran::where('setoran_sampah_id', $setoran->id)->sum('nilai');
+            $totalNilai = DetailSetoran::where('setoran_sampah_id', $setoran->id)->sum('saldo');
 
             $setoran->total_berat = $totalBerat;
-            $setoran->total_nilai = $totalNilai;
+            $setoran->total_saldo = $totalNilai;
             $setoran->save();
 
             DB::commit();
@@ -362,13 +364,13 @@ class DetailSetoranController extends Controller
 
         // Ambil detail setoran dengan relasi katalog sampah dan sub kategori
         $detailSetoran = DetailSetoran::where('setoran_sampah_id', $setoranId)
-            ->with(['katalogSampah.subKategori.kategoriSampah'])
+            ->with(['katalogSampah.subKategori.kategoriSampah', 'itemSampah'])
             ->get();
 
         // Format harga dan nilai untuk tampilan
         foreach ($detailSetoran as $detail) {
-            $detail->harga_format = 'Rp ' . number_format($detail->harga_per_kg, 0, ',', '.');
-            $detail->nilai_format = 'Rp ' . number_format($detail->nilai, 0, ',', '.');
+            $detail->harga_format = 'Rp ' . number_format($detail->itemSampah->harga_per_kg ?? 0, 0, ',', '.');
+            $detail->nilai_format = 'Rp ' . number_format($detail->saldo, 0, ',', '.');
             $detail->berat_format = number_format($detail->berat, 2, ',', '.') . ' kg';
             $detail->kategori_utama = $detail->katalogSampah->kategoriSampahText ?? '';
             $detail->sub_kategori = $detail->katalogSampah->subKategoriText ?? '';
@@ -410,14 +412,14 @@ class DetailSetoranController extends Controller
                 'setoran' => [
                     'id' => $setoran->id,
                     'kode_setoran' => $setoran->kode_setoran,
-                    'status' => $setoran->status,
+                    'status' => $setoran->status_setoran,
                     'tanggal_setoran' => $setoran->tanggal_setoran,
                     'waktu_setoran' => $setoran->waktu_setoran,
                     'total_berat' => $setoran->total_berat,
                     'total_berat_format' => number_format($setoran->total_berat, 2, ',', '.') . ' kg',
-                    'total_nilai' => $setoran->total_nilai,
-                    'total_nilai_format' => 'Rp ' . number_format($setoran->total_nilai, 0, ',', '.'),
-                    'editable' => $setoran->status === self::STATUS_PENGAJUAN
+                    'total_nilai' => $setoran->total_saldo,
+                    'total_nilai_format' => 'Rp ' . number_format($setoran->total_saldo, 0, ',', '.'),
+                    'editable' => $setoran->status_setoran === self::STATUS_PENGAJUAN
                 ]
             ]
         ]);
@@ -431,7 +433,7 @@ class DetailSetoranController extends Controller
      */
     public function getItemDetail($id)
     {
-        $detailSetoran = DetailSetoran::with(['katalogSampah.subKategori.kategoriSampah'])
+        $detailSetoran = DetailSetoran::with(['katalogSampah.subKategori.kategoriSampah', 'itemSampah'])
             ->find($id);
 
         if (!$detailSetoran) {
@@ -454,8 +456,8 @@ class DetailSetoranController extends Controller
         }
 
         // Format detail untuk tampilan
-        $detailSetoran->harga_format = 'Rp ' . number_format($detailSetoran->harga_per_kg, 0, ',', '.');
-        $detailSetoran->nilai_format = 'Rp ' . number_format($detailSetoran->nilai, 0, ',', '.');
+        $detailSetoran->harga_format = 'Rp ' . number_format($detailSetoran->itemSampah->harga_per_kg ?? 0, 0, ',', '.');
+        $detailSetoran->nilai_format = 'Rp ' . number_format($detailSetoran->saldo, 0, ',', '.');
         $detailSetoran->berat_format = number_format($detailSetoran->berat, 2, ',', '.') . ' kg';
 
         if ($detailSetoran->foto) {
@@ -522,7 +524,7 @@ class DetailSetoranController extends Controller
         }
 
         // Cek apakah setoran masih dalam status pengajuan
-        if ($setoran->status !== self::STATUS_PENGAJUAN) {
+        if ($setoran->status_setoran !== self::STATUS_PENGAJUAN) {
             return response()->json([
                 'success' => false,
                 'message' => 'Hanya setoran dengan status pengajuan yang dapat dimodifikasi'
@@ -542,7 +544,10 @@ class DetailSetoranController extends Controller
                 }
 
                 $detailSetoran->berat = $item['berat'];
-                $detailSetoran->nilai = $item['berat'] * $detailSetoran->harga_per_kg;
+                
+                // Calculate saldo based on katalog sampah price
+                $katalogSampah = KatalogSampah::find($detailSetoran->item_sampah_id);
+                $detailSetoran->saldo = $item['berat'] * $katalogSampah->harga_per_kg;
                 $detailSetoran->save();
 
                 $updatedItems[] = $detailSetoran;
@@ -550,10 +555,10 @@ class DetailSetoranController extends Controller
 
             // Update total berat dan nilai setoran
             $totalBerat = DetailSetoran::where('setoran_sampah_id', $setoranId)->sum('berat');
-            $totalNilai = DetailSetoran::where('setoran_sampah_id', $setoranId)->sum('nilai');
+            $totalNilai = DetailSetoran::where('setoran_sampah_id', $setoranId)->sum('saldo');
 
             $setoran->total_berat = $totalBerat;
-            $setoran->total_nilai = $totalNilai;
+            $setoran->total_saldo = $totalNilai;
             $setoran->save();
 
             DB::commit();

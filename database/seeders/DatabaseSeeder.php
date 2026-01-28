@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             SubKategoriSampahSeeder::class,       // ← Baru sub kategori (per bank)
             JamOperasionalBankSampahSeeder::class,
             KatalogSampahSeeder::class,
+            JadwalSampahSeeder::class,            // ← Jadwal sampah
         ]);
     }
 }
