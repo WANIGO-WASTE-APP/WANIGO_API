@@ -26,7 +26,14 @@ This document provides comprehensive API documentation for the WANIGO Bank Sampa
    - [Get Setoran Detail](#get-setoran-detail)
    - [Cancel Setoran](#cancel-setoran)
    - [Get Dashboard Statistics](#get-dashboard-statistics)
-4. [Response Format Standards](#response-format-standards)
+4. [Detail Setoran Endpoints](#detail-setoran-endpoints)
+   - [Get Single Item Detail](#get-single-item-detail)
+   - [Get All Items by Setoran](#get-all-items-by-setoran)
+   - [Add Item to Setoran](#add-item-to-setoran)
+   - [Update Item Detail](#update-item-detail)
+   - [Delete Item from Setoran](#delete-item-from-setoran)
+   - [Bulk Update Items](#bulk-update-items)
+5. [Response Format Standards](#response-format-standards)
 5. [Error Handling](#error-handling)
 6. [Deprecation Notices](#deprecation-notices)
 7. [Status Values Reference](#status-values-reference)
@@ -987,6 +994,731 @@ curl -X GET "https://api.wanigo.com/api/nasabah/setoran-sampah/dashboard-stats" 
 
 ---
 
+## Detail Setoran Endpoints
+
+The Detail Setoran endpoints manage individual waste items within a deposit transaction (setoran sampah). These endpoints allow users to view, add, update, and delete specific items in their waste deposits.
+
+### Important Distinctions
+
+**Two Main Retrieval Endpoints:**
+
+1. **GET /api/nasabah/detail-setoran/{id}/detail** - Retrieves a **SINGLE** detail_setoran item by its ID
+2. **POST /api/nasabah/detail-setoran/by-setoran** - Retrieves **ALL** detail_setoran items for a given setoran_sampah_id
+
+### Get Single Item Detail
+
+Retrieve detailed information about a **SINGLE** waste item within a deposit, including bank name and deposit code.
+
+**Endpoint:** `GET /api/nasabah/detail-setoran/{id}/detail`
+
+**Authentication:** Required (Bearer token)
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| id | integer | Yes | Detail setoran ID (individual item ID) |
+
+**Success Response (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "detail_setoran": {
+      "id": 45,
+      "setoran_sampah_id": 123,
+      "item_sampah_id": 5,
+      "berat": 2.50,
+      "saldo": 12500.00,
+      "foto": "setoran_sampah/photo123.jpg",
+      "foto_url": "https://api.wanigo.com/storage/setoran_sampah/photo123.jpg",
+      "harga_format": "Rp 5.000",
+      "nilai_format": "Rp 12.500",
+      "berat_format": "2,50 kg",
+      "created_at": "2026-01-25T10:00:00.000000Z",
+      "updated_at": "2026-01-25T10:00:00.000000Z",
+      "katalog_sampah": {
+        "id": 5,
+        "nama_item_sampah": "Botol Plastik PET",
+        "harga_per_kg": 5000.00,
+        "kategori_sampah": 0,
+        "sub_kategori_sampah_id": 1
+      },
+      "setoran_sampah": {
+        "id": 123,
+        "kode_setoran_sampah": "MELA001234",
+        "bank_sampah": {
+          "id": 1,
+          "nama_bank_sampah": "Bank Sampah Melati"
+        }
+      }
+    },
+    "item_sampah": {
+      "id": 5,
+      "nama": "Botol Plastik PET",
+      "kategori_utama": "Sampah Kering",
+      "sub_kategori": "Plastik",
+      "deskripsi": "Botol plastik jenis PET yang bersih dan kering",
+      "cara_pemilahan": "Pisahkan tutup botol, bersihkan dari sisa cairan",
+      "cara_pengemasan": "Kumpulkan dalam kantong plastik besar",
+      "gambar_url": "https://api.wanigo.com/storage/katalog/botol-pet.jpg"
+    },
+    "nama_bank_sampah": "Bank Sampah Melati",
+    "kode_setoran": "MELA001234"
+  }
+}
+```
+
+**Error Responses:**
+
+**404 Not Found** - Detail setoran not found:
+```json
+{
+  "success": false,
+  "message": "Detail setoran tidak ditemukan"
+}
+```
+
+**403 Forbidden** - Unauthorized access:
+```json
+{
+  "success": false,
+  "message": "Anda tidak memiliki akses ke data ini"
+}
+```
+
+**Field Descriptions:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| detail_setoran | object | Complete detail setoran information |
+| detail_setoran.id | integer | Detail setoran unique identifier |
+| detail_setoran.setoran_sampah_id | integer | Parent setoran ID |
+| detail_setoran.item_sampah_id | integer | Katalog sampah ID |
+| detail_setoran.berat | float | Weight in kilograms |
+| detail_setoran.saldo | float | Calculated value (berat × harga_per_kg) |
+| detail_setoran.foto | string\|null | Photo file path |
+| detail_setoran.foto_url | string\|null | Full photo URL |
+| detail_setoran.harga_format | string | Formatted price per kg |
+| detail_setoran.nilai_format | string | Formatted total value |
+| detail_setoran.berat_format | string | Formatted weight with unit |
+| item_sampah | object | Complete waste item catalog information |
+| item_sampah.nama | string | Item name |
+| item_sampah.kategori_utama | string | Main category (Kering/Basah) |
+| item_sampah.sub_kategori | string | Sub-category name |
+| item_sampah.deskripsi | string | Item description |
+| item_sampah.cara_pemilahan | string | Sorting instructions |
+| item_sampah.cara_pengemasan | string | Packaging instructions |
+| item_sampah.gambar_url | string\|null | Item reference image URL |
+| **nama_bank_sampah** | string\|null | **NEW:** Bank sampah name |
+| **kode_setoran** | string\|null | **NEW:** Deposit code |
+
+**Important Notes:**
+
+1. **This endpoint retrieves a SINGLE item** - Use the detail_setoran ID (not setoran_sampah_id)
+2. **nama_bank_sampah and kode_setoran are NEW fields** added for convenience
+3. Returns complete item information including catalog details
+4. Only accessible by the user who owns the parent setoran
+5. Returns 403 if user tries to access another user's detail item
+
+**Example cURL:**
+```bash
+curl -X GET "https://api.wanigo.com/api/nasabah/detail-setoran/45/detail" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer 1|abcdef123456..."
+```
+
+---
+
+### Get All Items by Setoran
+
+Retrieve **ALL** detail_setoran items for a specific setoran_sampah, grouped by sub-category.
+
+**Endpoint:** `POST /api/nasabah/detail-setoran/by-setoran`
+
+**Authentication:** Required (Bearer token)
+
+**Request Headers:**
+```
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {token}
+```
+
+**Request Body:**
+```json
+{
+  "setoran_sampah_id": 123
+}
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| setoran_sampah_id | integer | Yes | Setoran sampah ID to retrieve all items from |
+
+**Success Response (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "detail_setoran": [
+      {
+        "id": 45,
+        "setoran_sampah_id": 123,
+        "item_sampah_id": 5,
+        "berat": 2.50,
+        "saldo": 12500.00,
+        "foto": "setoran_sampah/photo123.jpg",
+        "foto_url": "https://api.wanigo.com/storage/setoran_sampah/photo123.jpg",
+        "harga_format": "Rp 5.000",
+        "nilai_format": "Rp 12.500",
+        "berat_format": "2,50 kg",
+        "kategori_utama": "Sampah Kering",
+        "sub_kategori": "Plastik",
+        "katalog_sampah": {
+          "id": 5,
+          "nama_item_sampah": "Botol Plastik PET",
+          "harga_per_kg": 5000.00,
+          "kategori_sampah": 0,
+          "sub_kategori_sampah_id": 1
+        }
+      },
+      {
+        "id": 46,
+        "setoran_sampah_id": 123,
+        "item_sampah_id": 12,
+        "berat": 1.00,
+        "saldo": 3000.00,
+        "foto": null,
+        "foto_url": null,
+        "harga_format": "Rp 3.000",
+        "nilai_format": "Rp 3.000",
+        "berat_format": "1,00 kg",
+        "kategori_utama": "Sampah Kering",
+        "sub_kategori": "Kertas",
+        "katalog_sampah": {
+          "id": 12,
+          "nama_item_sampah": "Kertas HVS",
+          "harga_per_kg": 3000.00,
+          "kategori_sampah": 0,
+          "sub_kategori_sampah_id": 2
+        }
+      }
+    ],
+    "detail_by_sub_kategori": [
+      {
+        "id": 1,
+        "nama": "Plastik",
+        "warna": "#FF5733",
+        "items": [
+          {
+            "id": 45,
+            "setoran_sampah_id": 123,
+            "item_sampah_id": 5,
+            "berat": 2.50,
+            "saldo": 12500.00,
+            "harga_format": "Rp 5.000",
+            "nilai_format": "Rp 12.500",
+            "berat_format": "2,50 kg",
+            "katalog_sampah": {
+              "id": 5,
+              "nama_item_sampah": "Botol Plastik PET"
+            }
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nama": "Kertas",
+        "warna": "#33C3FF",
+        "items": [
+          {
+            "id": 46,
+            "setoran_sampah_id": 123,
+            "item_sampah_id": 12,
+            "berat": 1.00,
+            "saldo": 3000.00,
+            "harga_format": "Rp 3.000",
+            "nilai_format": "Rp 3.000",
+            "berat_format": "1,00 kg",
+            "katalog_sampah": {
+              "id": 12,
+              "nama_item_sampah": "Kertas HVS"
+            }
+          }
+        ]
+      }
+    ],
+    "setoran": {
+      "id": 123,
+      "kode_setoran": "MELA001234",
+      "nama_bank_sampah": "Bank Sampah Melati",
+      "status": "pengajuan",
+      "tanggal_setoran": "2026-01-25",
+      "waktu_setoran": "10:00",
+      "total_berat": 3.50,
+      "total_berat_format": "3,50 kg",
+      "total_nilai": 15500.00,
+      "total_nilai_format": "Rp 15.500",
+      "editable": true
+    }
+  }
+}
+```
+
+**Error Responses:**
+
+**404 Not Found** - Setoran not found or unauthorized:
+```json
+{
+  "success": false,
+  "message": "Setoran tidak ditemukan atau Anda tidak memiliki akses"
+}
+```
+
+**422 Unprocessable Entity** - Validation error:
+```json
+{
+  "success": false,
+  "message": "The setoran_sampah_id field is required."
+}
+```
+
+**Field Descriptions:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| detail_setoran | array | **ALL** detail items in original format |
+| detail_by_sub_kategori | array | Items grouped by sub-category for organized display |
+| detail_by_sub_kategori[].id | integer | Sub-category ID |
+| detail_by_sub_kategori[].nama | string | Sub-category name |
+| detail_by_sub_kategori[].warna | string | Sub-category color (hex code) |
+| detail_by_sub_kategori[].items | array | Items belonging to this sub-category |
+| setoran | object | Parent setoran summary information |
+| setoran.id | integer | Setoran sampah ID |
+| setoran.kode_setoran | string | Deposit code |
+| **setoran.nama_bank_sampah** | string\|null | **NEW:** Bank sampah name |
+| setoran.status | string | Current status (pengajuan, diproses, selesai, dibatalkan) |
+| setoran.tanggal_setoran | string | Deposit date (YYYY-MM-DD) |
+| setoran.waktu_setoran | string | Deposit time (HH:mm) |
+| setoran.total_berat | float | Total weight of all items |
+| setoran.total_berat_format | string | Formatted total weight |
+| setoran.total_nilai | float | Total value of all items |
+| setoran.total_nilai_format | string | Formatted total value |
+| setoran.editable | boolean | Whether items can be edited (true only if status is pengajuan) |
+
+**Important Notes:**
+
+1. **This endpoint retrieves ALL items** for a given setoran_sampah_id
+2. **nama_bank_sampah is a NEW field** in the setoran object
+3. Returns items in two formats:
+   - `detail_setoran`: Flat array of all items
+   - `detail_by_sub_kategori`: Items grouped by sub-category for better UI organization
+4. Only accessible by the user who owns the setoran
+5. `editable` flag indicates if items can be modified (only when status is `pengajuan`)
+
+**Example cURL:**
+```bash
+curl -X POST "https://api.wanigo.com/api/nasabah/detail-setoran/by-setoran" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer 1|abcdef123456..." \
+  -d '{"setoran_sampah_id": 123}'
+```
+
+---
+
+### Add Item to Setoran
+
+Add a new waste item to an existing setoran (only allowed for status `pengajuan`).
+
+**Endpoint:** `POST /api/nasabah/detail-setoran`
+
+**Authentication:** Required (Bearer token)
+
+**Request Headers:**
+```
+Content-Type: multipart/form-data
+Accept: application/json
+Authorization: Bearer {token}
+```
+
+**Request Body (multipart/form-data):**
+```
+setoran_sampah_id: 123
+item_sampah_id: 5
+berat: 2.50
+foto: [file upload]
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| setoran_sampah_id | integer | Yes | Setoran sampah ID |
+| item_sampah_id | integer | Yes | Katalog sampah ID to add |
+| berat | float | No | Weight in kg (can be 0 for initial submission) |
+| foto | file | No | Photo of the waste item (jpeg, png, jpg, max 2MB) |
+
+**Success Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Item berhasil ditambahkan ke setoran",
+  "data": {
+    "detail_setoran": {
+      "id": 47,
+      "setoran_sampah_id": 123,
+      "item_sampah_id": 5,
+      "berat": 2.50,
+      "saldo": 12500.00,
+      "foto": "setoran_sampah/abc123.jpg",
+      "katalog_sampah": {
+        "id": 5,
+        "nama_item_sampah": "Botol Plastik PET",
+        "harga_per_kg": 5000.00
+      }
+    },
+    "total_berat": 5.50,
+    "total_berat_format": "5,50 kg",
+    "total_nilai": 27500.00,
+    "total_nilai_format": "Rp 27.500"
+  }
+}
+```
+
+**Error Responses:**
+
+**404 Not Found:**
+```json
+{
+  "success": false,
+  "message": "Setoran tidak ditemukan atau Anda tidak memiliki akses"
+}
+```
+
+**422 Unprocessable Entity** - Wrong status:
+```json
+{
+  "success": false,
+  "message": "Hanya setoran dengan status pengajuan yang dapat dimodifikasi"
+}
+```
+
+**422 Unprocessable Entity** - Invalid item:
+```json
+{
+  "success": false,
+  "message": "Item sampah tidak valid atau tidak terdaftar di bank sampah ini"
+}
+```
+
+**422 Unprocessable Entity** - Duplicate item:
+```json
+{
+  "success": false,
+  "message": "Item ini sudah ditambahkan ke setoran ini"
+}
+```
+
+**Important Notes:**
+
+1. Can only add items to setoran with status **`pengajuan`**
+2. Item must belong to the same bank sampah as the setoran
+3. Cannot add duplicate items (same item_sampah_id)
+4. Weight can be 0 for initial submission (will be filled by bank staff)
+5. Photo is optional but recommended
+6. Automatically updates setoran total_berat and total_saldo
+
+**Example cURL:**
+```bash
+curl -X POST "https://api.wanigo.com/api/nasabah/detail-setoran" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer 1|abcdef123456..." \
+  -F "setoran_sampah_id=123" \
+  -F "item_sampah_id=5" \
+  -F "berat=2.50" \
+  -F "foto=@/path/to/photo.jpg"
+```
+
+---
+
+### Update Item Detail
+
+Update weight and photo of an existing detail setoran item.
+
+**Endpoint:** `PUT /api/nasabah/detail-setoran/{id}`
+
+**Authentication:** Required (Bearer token)
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| id | integer | Yes | Detail setoran ID to update |
+
+**Request Headers:**
+```
+Content-Type: multipart/form-data
+Accept: application/json
+Authorization: Bearer {token}
+```
+
+**Request Body (multipart/form-data):**
+```
+berat: 3.00
+foto: [file upload]
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| berat | float | Yes | New weight in kg (minimum 0.01) |
+| foto | file | No | New photo (replaces old photo if provided) |
+
+**Success Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Detail setoran berhasil diupdate",
+  "data": {
+    "detail_setoran": {
+      "id": 45,
+      "setoran_sampah_id": 123,
+      "item_sampah_id": 5,
+      "berat": 3.00,
+      "saldo": 15000.00,
+      "foto": "setoran_sampah/new_photo.jpg",
+      "katalog_sampah": {
+        "id": 5,
+        "nama_item_sampah": "Botol Plastik PET",
+        "harga_per_kg": 5000.00
+      }
+    },
+    "total_berat": 6.00,
+    "total_berat_format": "6,00 kg",
+    "total_nilai": 30000.00,
+    "total_nilai_format": "Rp 30.000"
+  }
+}
+```
+
+**Error Responses:**
+
+**404 Not Found:**
+```json
+{
+  "success": false,
+  "message": "Detail setoran tidak ditemukan"
+}
+```
+
+**422 Unprocessable Entity:**
+```json
+{
+  "success": false,
+  "message": "Hanya setoran dengan status pengajuan yang dapat dimodifikasi"
+}
+```
+
+**Important Notes:**
+
+1. Can only update items in setoran with status **`pengajuan`**
+2. Weight is required and must be at least 0.01 kg
+3. Saldo is automatically recalculated based on new weight
+4. If new photo is uploaded, old photo is automatically deleted
+5. Automatically updates parent setoran totals
+
+**Example cURL:**
+```bash
+curl -X PUT "https://api.wanigo.com/api/nasabah/detail-setoran/45" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer 1|abcdef123456..." \
+  -F "berat=3.00" \
+  -F "foto=@/path/to/new_photo.jpg"
+```
+
+---
+
+### Delete Item from Setoran
+
+Remove an item from a setoran (only allowed for status `pengajuan`).
+
+**Endpoint:** `DELETE /api/nasabah/detail-setoran/{id}`
+
+**Authentication:** Required (Bearer token)
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| id | integer | Yes | Detail setoran ID to delete |
+
+**Success Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Item berhasil dihapus dari setoran",
+  "data": {
+    "total_berat": 3.00,
+    "total_berat_format": "3,00 kg",
+    "total_nilai": 15000.00,
+    "total_nilai_format": "Rp 15.000"
+  }
+}
+```
+
+**Error Responses:**
+
+**404 Not Found:**
+```json
+{
+  "success": false,
+  "message": "Detail setoran tidak ditemukan"
+}
+```
+
+**422 Unprocessable Entity:**
+```json
+{
+  "success": false,
+  "message": "Hanya setoran dengan status pengajuan yang dapat dimodifikasi"
+}
+```
+
+**Important Notes:**
+
+1. Can only delete items from setoran with status **`pengajuan`**
+2. Photo is automatically deleted if exists
+3. Automatically updates parent setoran totals
+4. Cannot be undone - item is permanently deleted
+
+**Example cURL:**
+```bash
+curl -X DELETE "https://api.wanigo.com/api/nasabah/detail-setoran/45" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer 1|abcdef123456..."
+```
+
+---
+
+### Bulk Update Items
+
+Update multiple detail setoran items in a single request.
+
+**Endpoint:** `POST /api/nasabah/detail-setoran/bulk-update`
+
+**Authentication:** Required (Bearer token)
+
+**Request Headers:**
+```
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {token}
+```
+
+**Request Body:**
+```json
+{
+  "setoran_sampah_id": 123,
+  "items": [
+    {
+      "id": 45,
+      "berat": 3.00
+    },
+    {
+      "id": 46,
+      "berat": 1.50
+    }
+  ]
+}
+```
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| setoran_sampah_id | integer | Yes | Setoran sampah ID |
+| items | array | Yes | Array of items to update |
+| items[].id | integer | Yes | Detail setoran ID |
+| items[].berat | float | Yes | New weight in kg (minimum 0.01) |
+
+**Success Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Item setoran berhasil diupdate",
+  "data": {
+    "updated_items": [
+      {
+        "id": 45,
+        "setoran_sampah_id": 123,
+        "item_sampah_id": 5,
+        "berat": 3.00,
+        "saldo": 15000.00
+      },
+      {
+        "id": 46,
+        "setoran_sampah_id": 123,
+        "item_sampah_id": 12,
+        "berat": 1.50,
+        "saldo": 4500.00
+      }
+    ],
+    "total_berat": 4.50,
+    "total_berat_format": "4,50 kg",
+    "total_nilai": 19500.00,
+    "total_nilai_format": "Rp 19.500"
+  }
+}
+```
+
+**Error Responses:**
+
+**404 Not Found:**
+```json
+{
+  "success": false,
+  "message": "Setoran tidak ditemukan atau Anda tidak memiliki akses"
+}
+```
+
+**422 Unprocessable Entity:**
+```json
+{
+  "success": false,
+  "message": "Hanya setoran dengan status pengajuan yang dapat dimodifikasi"
+}
+```
+
+**Important Notes:**
+
+1. Can only update items in setoran with status **`pengajuan`**
+2. All items must belong to the specified setoran_sampah_id
+3. Saldo is automatically recalculated for each item
+4. Updates are performed in a transaction (all or nothing)
+5. Automatically updates parent setoran totals
+
+**Example cURL:**
+```bash
+curl -X POST "https://api.wanigo.com/api/nasabah/detail-setoran/bulk-update" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "Authorization: Bearer 1|abcdef123456..." \
+  -d '{
+    "setoran_sampah_id": 123,
+    "items": [
+      {"id": 45, "berat": 3.00},
+      {"id": 46, "berat": 1.50}
+    ]
+  }'
+```
+
+---
+
 ## Response Format Standards
 
 All API endpoints follow a consistent response structure:
@@ -1288,13 +2020,20 @@ WANIGO API
 │   ├── Get Bank Sampah Detail
 │   ├── Get Registered Bank Sampah
 │   └── Get Top Frequency
-└── Setoran Sampah
-    ├── Get Ongoing Setoran
-    ├── Get Setoran History
-    ├── Create Pengajuan
-    ├── Get Setoran Detail
-    ├── Cancel Setoran
-    └── Get Dashboard Stats
+├── Setoran Sampah
+│   ├── Get Ongoing Setoran
+│   ├── Get Setoran History
+│   ├── Create Pengajuan
+│   ├── Get Setoran Detail
+│   ├── Cancel Setoran
+│   └── Get Dashboard Stats
+└── Detail Setoran
+    ├── Get Single Item Detail
+    ├── Get All Items by Setoran
+    ├── Add Item to Setoran
+    ├── Update Item Detail
+    ├── Delete Item from Setoran
+    └── Bulk Update Items
 ```
 
 ### Auto-Save Token Script
@@ -1313,6 +2052,20 @@ if (pm.response.code === 200) {
 ---
 
 ## Changelog
+
+### Version 1.1 (January 2026)
+
+**Added:**
+- Detail Setoran endpoints documentation
+- `nama_bank_sampah` field in GET /api/nasabah/detail-setoran/{id}/detail response
+- `kode_setoran` field in GET /api/nasabah/detail-setoran/{id}/detail response
+- `nama_bank_sampah` field in POST /api/nasabah/detail-setoran/by-setoran response (setoran object)
+- Comprehensive documentation for all Detail Setoran CRUD operations
+
+**Clarified:**
+- GET /api/nasabah/detail-setoran/{id}/detail retrieves a **SINGLE** item by detail_setoran ID
+- POST /api/nasabah/detail-setoran/by-setoran retrieves **ALL** items for a given setoran_sampah_id
+- Distinction between the two main retrieval endpoints
 
 ### Version 1.0 (January 2026)
 

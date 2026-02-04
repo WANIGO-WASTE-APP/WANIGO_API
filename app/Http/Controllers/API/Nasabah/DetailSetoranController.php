@@ -351,7 +351,8 @@ class DetailSetoranController extends Controller
         $setoranId = $request->setoran_sampah_id;
 
         // Cek apakah setoran ini milik user yang login
-        $setoran = SetoranSampah::where('id', $setoranId)
+        $setoran = SetoranSampah::with('bankSampah')
+            ->where('id', $setoranId)
             ->where('user_id', $userId)
             ->first();
 
@@ -404,6 +405,9 @@ class DetailSetoranController extends Controller
         // Konversi ke array untuk response JSON
         $groupedDetails = array_values($detailBySubKategori);
 
+        // Extract bank name from relationship
+        $namaBankSampah = $setoran->bankSampah->nama_bank_sampah ?? null;
+
         return response()->json([
             'success' => true,
             'data' => [
@@ -411,7 +415,8 @@ class DetailSetoranController extends Controller
                 'detail_by_sub_kategori' => $groupedDetails, // Grouped by sub-kategori
                 'setoran' => [
                     'id' => $setoran->id,
-                    'kode_setoran' => $setoran->kode_setoran,
+                    'kode_setoran' => $setoran->kode_setoran_sampah,
+                    'nama_bank_sampah' => $namaBankSampah,
                     'status' => $setoran->status_setoran,
                     'tanggal_setoran' => $setoran->tanggal_setoran,
                     'waktu_setoran' => $setoran->waktu_setoran,
@@ -433,7 +438,11 @@ class DetailSetoranController extends Controller
      */
     public function getItemDetail($id)
     {
-        $detailSetoran = DetailSetoran::with(['katalogSampah.subKategori.kategoriSampah', 'itemSampah'])
+        $detailSetoran = DetailSetoran::with([
+            'katalogSampah.subKategori.kategoriSampah',
+            'itemSampah',
+            'setoranSampah.bankSampah'
+        ])
             ->find($id);
 
         if (!$detailSetoran) {
@@ -467,6 +476,10 @@ class DetailSetoranController extends Controller
         $katalogSampah = $detailSetoran->katalogSampah;
         $subKategori = $katalogSampah->subKategori;
 
+        // Extract bank name and deposit code from relationships
+        $namaBankSampah = $detailSetoran->setoranSampah->bankSampah->nama_bank_sampah ?? null;
+        $kodeSetoran = $detailSetoran->setoranSampah->kode_setoran_sampah ?? null;
+
         return response()->json([
             'success' => true,
             'data' => [
@@ -481,7 +494,9 @@ class DetailSetoranController extends Controller
                     'cara_pengemasan' => $katalogSampah->cara_pengemasan,
                     'gambar_url' => $katalogSampah->gambar_item_sampah ?
                         url('storage/' . $katalogSampah->gambar_item_sampah) : null
-                ]
+                ],
+                'nama_bank_sampah' => $namaBankSampah,
+                'kode_setoran' => $kodeSetoran
             ]
         ]);
     }

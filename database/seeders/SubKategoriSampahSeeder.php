@@ -3,185 +3,205 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\SubKategoriSampah;
-use App\Models\BankSampah;
-use App\Models\KategoriSampah;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class SubKategoriSampahSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      * 
-     * Seeds comprehensive master data for waste sub-categories:
-     * - 7 sub-categories for Sampah Kering (Dry Waste)
-     * - 3 sub-categories for Sampah Basah (Wet Waste)
+     * Seeds predefined waste sub-categories for Sampah Kering (Dry Waste):
+     * - 32 sub-categories organized into 6 groups
+     * - Grup Kertas (5), Grup Botol (9), Grup Bak (3), Grup Logam (3), Grup Plastik (4), Grup Lainnya (8)
      * 
-     * Implements idempotence using unique constraint check.
+     * Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 6.3, 6.4
      */
     public function run(): void
     {
-        // Get all bank sampah
-        $bankSampahs = BankSampah::all();
+        $bankSampahId = 1;
+        $kategoriSampah = 0; // Sampah Kering
         
-        if ($bankSampahs->isEmpty()) {
-            $this->command->warn('No bank sampah found. Please run BankSampahSeeder first.');
+        // Get kategori_sampah_id for backward compatibility
+        $kategoriSampahId = DB::table('kategori_sampah')
+            ->where('nama_kategori', 'Sampah Kering')
+            ->value('id');
+        
+        if (!$kategoriSampahId) {
+            $this->command->error('Kategori Sampah "Sampah Kering" not found. Please run KategoriSampahSeeder first.');
             return;
         }
         
-        // Get kategori sampah for backward compatibility
-        $kategoriKering = KategoriSampah::getKering();
-        $kategoriBasah = KategoriSampah::getBasah();
+        // Check if the new data structure already exists (32 sub-categories)
+        $existingCount = DB::table('sub_kategori_sampah')
+            ->where('bank_sampah_id', $bankSampahId)
+            ->where('kategori_sampah', $kategoriSampah)
+            ->count();
         
-        if (!$kategoriKering || !$kategoriBasah) {
-            $this->command->error('Kategori sampah not found. Please run KategoriSampahSeeder first.');
+        // If we have exactly 32 records, assume the new structure is already seeded
+        if ($existingCount === 32) {
+            $this->command->info("Sub kategori sampah data already seeded (32 records found).");
             return;
         }
         
-        // Master data for sub-categories
-        $subKategoris = [
-            // Sampah Kering (kategori_sampah = 0)
-            [
-                'kategori_sampah' => 0,
-                'kategori_sampah_id' => $kategoriKering->id, // For backward compatibility
-                'kode_sub_kategori' => 'SK-001',
-                'nama_sub_kategori' => 'Kertas',
-                'slug' => 'kertas',
-                'deskripsi' => 'Kertas bekas, koran, majalah, buku',
-                'icon' => 'paper',
-                'warna' => '#8BC34A',
-                'urutan' => 1,
+        // If we have old data (not 32 records), clear it and reseed with new structure
+        if ($existingCount > 0 && $existingCount !== 32) {
+            $this->command->warn("Found {$existingCount} old sub-category records. Clearing and reseeding with new structure...");
+            
+            // First, set all katalog_sampah.sub_kategori_sampah_id to NULL for this bank and category
+            // (old column name) to avoid foreign key constraint violations
+            DB::table('katalog_sampah')
+                ->whereIn('sub_kategori_sampah_id', function($query) use ($bankSampahId, $kategoriSampah) {
+                    $query->select('id')
+                        ->from('sub_kategori_sampah')
+                        ->where('bank_sampah_id', $bankSampahId)
+                        ->where('kategori_sampah', $kategoriSampah);
+                })
+                ->update(['sub_kategori_sampah_id' => null]);
+            
+            $this->command->info("Cleared katalog_sampah references to old sub-categories.");
+            
+            // Now delete old sub-categories for this bank and category
+            DB::table('sub_kategori_sampah')
+                ->where('bank_sampah_id', $bankSampahId)
+                ->where('kategori_sampah', $kategoriSampah)
+                ->delete();
+            
+            $this->command->info("Old data cleared.");
+        }
+        
+        // Define sub-category groups data structure
+        $subKategoriGroups = [
+            'Grup Kertas' => ['Kardus', 'HVS / Kertas Putih', 'Buku', 'Koran Buram', 'Duplek'],
+            'Grup Botol' => [
+                'Botol BM', 
+                'Botol PET', 
+                'Botol Kotor', 
+                'Botol Warna', 
+                'Botol Campur Bersih', 
+                'Botol Campur Kotor', 
+                'Botol Beling', 
+                'Botol Keras', 
+                'Botol Minyak'
             ],
-            [
-                'kategori_sampah' => 0,
-                'kategori_sampah_id' => $kategoriKering->id,
-                'kode_sub_kategori' => 'SK-002',
-                'nama_sub_kategori' => 'Botol Plastik',
-                'slug' => 'botol-plastik',
-                'deskripsi' => 'Botol plastik PET, HDPE',
-                'icon' => 'bottle',
-                'warna' => '#2196F3',
-                'urutan' => 2,
-            ],
-            [
-                'kategori_sampah' => 0,
-                'kategori_sampah_id' => $kategoriKering->id,
-                'kode_sub_kategori' => 'SK-003',
-                'nama_sub_kategori' => 'Plastik',
-                'slug' => 'plastik',
-                'deskripsi' => 'Plastik kemasan, kantong plastik',
-                'icon' => 'plastic-bag',
-                'warna' => '#03A9F4',
-                'urutan' => 3,
-            ],
-            [
-                'kategori_sampah' => 0,
-                'kategori_sampah_id' => $kategoriKering->id,
-                'kode_sub_kategori' => 'SK-004',
-                'nama_sub_kategori' => 'Logam',
-                'slug' => 'logam',
-                'deskripsi' => 'Kaleng, aluminium, besi',
-                'icon' => 'metal',
-                'warna' => '#9E9E9E',
-                'urutan' => 4,
-            ],
-            [
-                'kategori_sampah' => 0,
-                'kategori_sampah_id' => $kategoriKering->id,
-                'kode_sub_kategori' => 'SK-005',
-                'nama_sub_kategori' => 'Kaca',
-                'slug' => 'kaca',
-                'deskripsi' => 'Botol kaca, pecahan kaca',
-                'icon' => 'glass',
-                'warna' => '#00BCD4',
-                'urutan' => 5,
-            ],
-            [
-                'kategori_sampah' => 0,
-                'kategori_sampah_id' => $kategoriKering->id,
-                'kode_sub_kategori' => 'SK-006',
-                'nama_sub_kategori' => 'Kardus',
-                'slug' => 'kardus',
-                'deskripsi' => 'Kardus bekas, karton',
-                'icon' => 'cardboard',
-                'warna' => '#795548',
-                'urutan' => 6,
-            ],
-            [
-                'kategori_sampah' => 0,
-                'kategori_sampah_id' => $kategoriKering->id,
-                'kode_sub_kategori' => 'SK-007',
-                'nama_sub_kategori' => 'Elektronik',
-                'slug' => 'elektronik',
-                'deskripsi' => 'Barang elektronik bekas',
-                'icon' => 'electronics',
-                'warna' => '#607D8B',
-                'urutan' => 7,
-            ],
-            // Sampah Basah (kategori_sampah = 1)
-            [
-                'kategori_sampah' => 1,
-                'kategori_sampah_id' => $kategoriBasah->id,
-                'kode_sub_kategori' => 'SB-001',
-                'nama_sub_kategori' => 'Organik',
-                'slug' => 'organik',
-                'deskripsi' => 'Sampah organik umum',
-                'icon' => 'organic',
-                'warna' => '#4CAF50',
-                'urutan' => 1,
-            ],
-            [
-                'kategori_sampah' => 1,
-                'kategori_sampah_id' => $kategoriBasah->id,
-                'kode_sub_kategori' => 'SB-002',
-                'nama_sub_kategori' => 'Sisa Makanan',
-                'slug' => 'sisa-makanan',
-                'deskripsi' => 'Sisa makanan, kulit buah',
-                'icon' => 'food-waste',
-                'warna' => '#8BC34A',
-                'urutan' => 2,
-            ],
-            [
-                'kategori_sampah' => 1,
-                'kategori_sampah_id' => $kategoriBasah->id,
-                'kode_sub_kategori' => 'SB-003',
-                'nama_sub_kategori' => 'Daun',
-                'slug' => 'daun',
-                'deskripsi' => 'Daun kering, ranting',
-                'icon' => 'leaf',
-                'warna' => '#689F38',
-                'urutan' => 3,
-            ],
+            'Grup Bak' => ['Bak Campur', 'Bak Keras', 'Bak Plastik'],
+            'Grup Logam' => ['Aluminium', 'Kaleng', 'Besi'],
+            'Grup Plastik' => ['Blowing', 'Plastik', 'Tempat Makan', 'Gembos'],
+            'Grup Lainnya' => [
+                'Gelas Mineral Bersih', 
+                'Gelas Mineral Kotor', 
+                'Gelas Warna Warni', 
+                'Tutup Botol', 
+                'Galon Le Mineral', 
+                'Jelantah', 
+                'Kabel Elektronik', 
+                'Grabang'
+            ]
         ];
         
-        // Create sub-categories for each bank sampah
-        $createdCount = 0;
-        $skippedCount = 0;
+        $urutan = 1;
+        $subKategoriMap = [];
+        $grupCounter = 1;
         
-        foreach ($bankSampahs as $bank) {
-            $this->command->info("Processing bank sampah: {$bank->nama_bank_sampah}");
-            
-            foreach ($subKategoris as $data) {
-                // Check if already exists using unique constraint
-                // (bank_sampah_id, kategori_sampah, slug)
-                $exists = SubKategoriSampah::where('bank_sampah_id', $bank->id)
-                    ->where('kategori_sampah', $data['kategori_sampah'])
-                    ->where('slug', $data['slug'])
-                    ->exists();
+        // Insert sub-categories and store IDs in map
+        foreach ($subKategoriGroups as $grupName => $items) {
+            $itemCounter = 1;
+            foreach ($items as $namaSubKategori) {
+                // Generate slug using Str::slug()
+                $slug = Str::slug($namaSubKategori);
                 
-                if (!$exists) {
-                    SubKategoriSampah::create(array_merge($data, [
-                        'bank_sampah_id' => $bank->id,
-                        'is_active' => true,
-                    ]));
-                    $createdCount++;
-                } else {
-                    $skippedCount++;
-                }
+                // Generate kode_sub_kategori (e.g., SK-001, SK-002, etc.)
+                $kodeSubKategori = 'SK-' . str_pad($urutan, 3, '0', STR_PAD_LEFT);
+                
+                // Use insertGetId() to capture sub-category ID
+                $subKategoriId = DB::table('sub_kategori_sampah')->insertGetId([
+                    'bank_sampah_id' => $bankSampahId,
+                    'kategori_sampah_id' => $kategoriSampahId,
+                    'kategori_sampah' => $kategoriSampah,
+                    'nama_sub_kategori' => $namaSubKategori,
+                    'kode_sub_kategori' => $kodeSubKategori,
+                    'slug' => $slug,
+                    'deskripsi' => null,
+                    'icon' => null,
+                    'warna' => null,
+                    'urutan' => $urutan,
+                    'status_aktif' => true,
+                    'is_active' => true,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+                
+                // Store sub-category ID in map for later katalog item mapping
+                $subKategoriMap[$namaSubKategori] = $subKategoriId;
+                $urutan++;
+                $itemCounter++;
             }
+            $grupCounter++;
         }
         
         $this->command->info("Sub kategori sampah seeded successfully.");
-        $this->command->info("Created: {$createdCount} sub-categories");
-        $this->command->info("Skipped (already exists): {$skippedCount} sub-categories");
+        $this->command->info("Created: " . count($subKategoriMap) . " sub-categories (urutan 1-" . ($urutan - 1) . ")");
+        
+        // Map katalog_sampah items to sub-categories (Task 3)
+        $this->mapKatalogSampahToSubKategori($subKategoriMap);
+    }
+    
+    /**
+     * Map katalog_sampah items to sub_kategori_sampah based on name matching.
+     * 
+     * Uses longest-match algorithm for accurate item-to-subcategory mapping.
+     * Requirements: 4.1, 4.2, 4.3, 4.4
+     * 
+     * @param array $subKategoriMap Map of sub-category names to IDs
+     * @return void
+     */
+    private function mapKatalogSampahToSubKategori(array $subKategoriMap): void
+    {
+        // Query katalog_sampah items where kategori_sampah = 0 (Sampah Kering)
+        $katalogItems = DB::table('katalog_sampah')
+            ->where('kategori_sampah', 0)
+            ->get();
+        
+        if ($katalogItems->isEmpty()) {
+            $this->command->warn('No katalog sampah items found to map.');
+            return;
+        }
+        
+        $mappedCount = 0;
+        $unmappedCount = 0;
+        
+        foreach ($katalogItems as $item) {
+            $bestMatch = null;
+            $longestMatchLength = 0;
+            
+            // Implement longest-match algorithm
+            foreach ($subKategoriMap as $subKategoriName => $subKategoriId) {
+                // Use case-insensitive matching with stripos()
+                if (stripos($item->nama_item_sampah, $subKategoriName) !== false) {
+                    $matchLength = strlen($subKategoriName);
+                    
+                    // Use the most specific match (longest matching substring)
+                    if ($matchLength > $longestMatchLength) {
+                        $bestMatch = $subKategoriId;
+                        $longestMatchLength = $matchLength;
+                    }
+                }
+            }
+            
+            // Update katalog_sampah.sub_kategori_id for matched items
+            if ($bestMatch !== null) {
+                DB::table('katalog_sampah')
+                    ->where('id', $item->id)
+                    ->update(['sub_kategori_id' => $bestMatch]);
+                $mappedCount++;
+            } else {
+                // Leave sub_kategori_id as NULL for non-matching items
+                $unmappedCount++;
+            }
+        }
+        
+        $this->command->info("Katalog sampah mapping completed.");
+        $this->command->info("Mapped: {$mappedCount} items");
+        $this->command->info("Unmapped: {$unmappedCount} items");
     }
 }

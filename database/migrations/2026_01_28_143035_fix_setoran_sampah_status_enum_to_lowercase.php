@@ -15,8 +15,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Change column to string temporarily to update values
-        DB::statement("ALTER TABLE setoran_sampah MODIFY COLUMN status_setoran VARCHAR(20)");
+        $driver = DB::getDriverName();
+        
+        if ($driver === 'mysql') {
+            // Change column to string temporarily to update values
+            DB::statement("ALTER TABLE setoran_sampah MODIFY COLUMN status_setoran VARCHAR(20)");
+        }
         
         // Update all existing values to lowercase
         DB::table('setoran_sampah')
@@ -35,8 +39,10 @@ return new class extends Migration
             ->where('status_setoran', 'Dibatalkan')
             ->update(['status_setoran' => 'dibatalkan']);
         
-        // Change back to enum with lowercase values
-        DB::statement("ALTER TABLE setoran_sampah MODIFY COLUMN status_setoran ENUM('pengajuan', 'diproses', 'selesai', 'dibatalkan') DEFAULT 'pengajuan'");
+        if ($driver === 'mysql') {
+            // Change back to enum with lowercase values
+            DB::statement("ALTER TABLE setoran_sampah MODIFY COLUMN status_setoran ENUM('pengajuan', 'diproses', 'selesai', 'dibatalkan') DEFAULT 'pengajuan'");
+        }
     }
 
     /**
@@ -44,8 +50,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Change column to string temporarily
-        DB::statement("ALTER TABLE setoran_sampah MODIFY COLUMN status_setoran VARCHAR(20)");
+        $driver = DB::getDriverName();
+        
+        if ($driver === 'mysql') {
+            // Change column to string temporarily
+            DB::statement("ALTER TABLE setoran_sampah MODIFY COLUMN status_setoran VARCHAR(20)");
+        }
         
         // Revert to capitalized values
         DB::table('setoran_sampah')
@@ -64,7 +74,9 @@ return new class extends Migration
             ->where('status_setoran', 'dibatalkan')
             ->update(['status_setoran' => 'Dibatalkan']);
         
-        // Change back to enum with capitalized values
-        DB::statement("ALTER TABLE setoran_sampah MODIFY COLUMN status_setoran ENUM('Pengajuan', 'Diproses', 'Selesai', 'Dibatalkan') DEFAULT 'Pengajuan'");
+        if ($driver === 'mysql') {
+            // Change back to enum with capitalized values
+            DB::statement("ALTER TABLE setoran_sampah MODIFY COLUMN status_setoran ENUM('Pengajuan', 'Diproses', 'Selesai', 'Dibatalkan') DEFAULT 'Pengajuan'");
+        }
     }
 };
